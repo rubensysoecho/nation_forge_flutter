@@ -5,6 +5,8 @@ abstract class NationEvent {}
 class LoadNations extends NationEvent {}
 
 class CreateNation extends NationEvent {
-  final Nation nation;
-  CreateNation(this.nation);
+  final String nationName;
+  final String governmentType;
+  final String age;
+  CreateNation(this.nationName, this.governmentType, this.age);
 }

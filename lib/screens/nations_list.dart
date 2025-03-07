@@ -16,11 +16,6 @@ class _NationsListState extends State<NationsList> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Explora y crea nuevas naciones de manera intuitiva',
-              style: Theme.of(context).textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
           ),
           NationList(),
           //NationCreateButton(),

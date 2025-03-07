@@ -4,7 +4,7 @@ import 'package:nation_forge/screens/dashboard.dart';
 import 'app_theme.dart';
 import 'blocs/nation_bloc.dart';
 import 'blocs/nation_event.dart';
-import 'screens/nations_list.dart';
+import 'blocs/war_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,8 +13,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NationBloc()..add(LoadNations()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<WarBloc>(create: (context) => WarBloc()),
+        BlocProvider<NationBloc>(create: (context) => NationBloc()),
+      ],
       child: MaterialApp(
         title: 'Historical Nation Generator',
         theme: AppTheme.lightTheme,

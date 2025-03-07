@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nation_forge/blocs/war_bloc.dart';
 import 'package:nation_forge/screens/nation_detail.dart';
+import 'package:nation_forge/screens/war_detail.dart';
 import '../blocs/nation_bloc.dart';
 import '../blocs/nation_event.dart';
 import '../blocs/nation_state.dart';
 
-class NationList extends StatefulWidget {
+class WarList extends StatefulWidget {
   @override
-  State<NationList> createState() => _NationListState();
+  State<WarList> createState() => _WarListState();
 }
 
-class _NationListState extends State<NationList> {
+class _WarListState extends State<WarList> {
   @override
   void initState() {
     super.initState();
@@ -19,26 +21,26 @@ class _NationListState extends State<NationList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<NationBloc, NationState>(
+      child: BlocBuilder<WarBloc, WarState>(
         builder: (context, state) {
-          if (state is NationLoading) {
+          if (state is WarLoading) {
             return Center(
                 child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ));
-          } else if (state is NationLoaded) {
+                  color: Theme.of(context).primaryColor,
+                ));
+          } else if (state is WarLoaded) {
             return ListView.builder(
-              itemCount: state.nations.length,
+              itemCount: state.wars.length,
               itemBuilder: (context, index) {
-                final nation = state.nations[index];
+                final war = state.wars[index];
                 return Card(
                   elevation: 3,
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
                     leading: const Icon(Icons.flag),
-                    title: Text(nation.nationName),
-                    subtitle: Text(nation.id),
+                    title: Text("Guerra ${war.aggressorCountry.name} - ${war.defenderCountry.name}"),
+                    subtitle: Text(war.results),
                     trailing: IconButton(
                       icon: const Icon(Icons.arrow_forward),
                       onPressed: () {
@@ -46,7 +48,7 @@ class _NationListState extends State<NationList> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                NationDetailPage(nation: nation),
+                                WarDetailPage(war: war,),
                           ),
                         );
                       },
