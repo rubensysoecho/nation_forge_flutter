@@ -1,4 +1,3 @@
-import '../models/nation.dart';
 
 abstract class NationEvent {}
 

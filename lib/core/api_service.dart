@@ -4,7 +4,7 @@ import 'package:nation_forge/models/war.dart';
 import '../models/nation.dart';
 
 class ApiService {
-  static const String deviceIp = '172.26.123.24';
+  static const String devIp = '172.26.123.24';
   static const String prodID = 'nation-forge-backend.onrender.com';
   static const String baseUrl = 'http://${prodID}/api/nation';
   static const String warBaseUrl = 'http://${prodID}/api/war';

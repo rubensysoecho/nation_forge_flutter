@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/blocs/war_bloc.dart';
-import 'package:nation_forge/screens/nation_detail.dart';
 import 'package:nation_forge/screens/war_detail.dart';
 import '../blocs/nation_bloc.dart';
 import '../blocs/nation_event.dart';
-import '../blocs/nation_state.dart';
 
 class WarList extends StatefulWidget {
   @override
@@ -25,9 +23,10 @@ class _WarListState extends State<WarList> {
         builder: (context, state) {
           if (state is WarLoading) {
             return Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ));
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
+            );
           } else if (state is WarLoaded) {
             return ListView.builder(
               itemCount: state.wars.length,
@@ -36,10 +35,11 @@ class _WarListState extends State<WarList> {
                 return Card(
                   elevation: 3,
                   margin:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
                     leading: const Icon(Icons.flag),
-                    title: Text("Guerra ${war.aggressorCountry.name} - ${war.defenderCountry.name}"),
+                    title: Text(
+                        "Guerra ${war.aggressorCountry.name} - ${war.defenderCountry.name}"),
                     subtitle: Text(war.results),
                     trailing: IconButton(
                       icon: const Icon(Icons.arrow_forward),
@@ -47,8 +47,9 @@ class _WarListState extends State<WarList> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                WarDetailPage(war: war,),
+                            builder: (context) => WarDetailPage(
+                              war: war,
+                            ),
                           ),
                         );
                       },
@@ -63,7 +64,7 @@ class _WarListState extends State<WarList> {
                 const Center(child: Text('No hay naciones disponibles')),
                 IconButton(
                   onPressed: () {
-                    context.read<NationBloc>().add(LoadNations());
+                    context.read<WarBloc>().add(LoadWars());
                   },
                   icon: Icon(Icons.refresh),
                 )

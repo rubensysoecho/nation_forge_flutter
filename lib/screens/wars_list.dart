@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nation_forge/widgets/nation_list.dart';
 import 'package:nation_forge/widgets/war_list.dart';
 
 class WarsList extends StatefulWidget {

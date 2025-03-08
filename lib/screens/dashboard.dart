@@ -5,7 +5,6 @@ import 'package:nation_forge/blocs/nation_event.dart';
 import 'package:nation_forge/blocs/war_bloc.dart';
 import 'package:nation_forge/screens/wars_list.dart';
 import '../blocs/nation_bloc.dart';
-import '../models/nation.dart';
 import 'nations_list.dart';
 
 class Dashboard extends StatefulWidget {

@@ -16,6 +16,10 @@ class _NationListState extends State<NationList> {
     super.initState();
   }
 
+  Future _refresh() async  {
+    context.read<NationBloc>().add(LoadNations());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -27,33 +31,37 @@ class _NationListState extends State<NationList> {
               color: Theme.of(context).primaryColor,
             ));
           } else if (state is NationLoaded) {
-            return ListView.builder(
-              itemCount: state.nations.length,
-              itemBuilder: (context, index) {
-                final nation = state.nations[index];
-                return Card(
-                  elevation: 3,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    leading: const Icon(Icons.flag),
-                    title: Text(nation.nationName),
-                    subtitle: Text(nation.id),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.arrow_forward),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                NationDetailPage(nation: nation),
-                          ),
-                        );
-                      },
+            return RefreshIndicator(
+              color: Theme.of(context).primaryColor,
+              onRefresh: _refresh,
+              child: ListView.builder(
+                itemCount: state.nations.length,
+                itemBuilder: (context, index) {
+                  final nation = state.nations[index];
+                  return Card(
+                    elevation: 3,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: ListTile(
+                      leading: const Icon(Icons.flag),
+                      title: Text(nation.nationName),
+                      subtitle: Text(nation.id),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  NationDetailPage(nation: nation),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           } else {
             return Column(
