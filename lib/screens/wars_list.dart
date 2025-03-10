@@ -64,7 +64,7 @@ class _WarsListState extends State<WarsList> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancelar'),
+                    child: Text('Cancelar', style: TextStyle(color: Theme.of(context).primaryColor),),
                   ),
                   TextButton(
                     onPressed: () {
@@ -73,7 +73,7 @@ class _WarsListState extends State<WarsList> {
                           .add(CreateWar(nationA, nationB, casusBelli, age));
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Crear'),
+                    child: Text('Crear', style: TextStyle(color: Theme.of(context).primaryColor),),
                   )
                 ],
               );

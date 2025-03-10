@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
+import 'package:nation_forge/blocs/auth_bloc.dart';
 import 'package:nation_forge/models/war.dart';
 import '../models/nation.dart';
 
@@ -68,5 +70,25 @@ class ApiService {
     } else {
       throw Exception('Failed to create war');
     }
+  }
+
+  Future<String> loginUser(String email, String password) async {
+    final url = Uri.parse('https://${prodID}/api/user/login');
+    String loginToken = "";
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        loginToken = jsonDecode(response.body)['user']['token'];
+      }
+    } catch (e) {
+      throw Exception('Error login');
+    }
+    return loginToken;
   }
 }

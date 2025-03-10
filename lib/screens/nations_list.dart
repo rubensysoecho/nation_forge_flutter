@@ -56,7 +56,7 @@ class _NationsListState extends State<NationsList> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Cancelar'),
+                    child: Text('Cancelar', style: TextStyle(color: Theme.of(context).primaryColor),),
                   ),
                   TextButton(
                     onPressed: () {
@@ -65,7 +65,7 @@ class _NationsListState extends State<NationsList> {
                           .add(CreateNation(nationName, governmentType, age));
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Crear'),
+                    child: Text('Crear', style: TextStyle(color: Theme.of(context).primaryColor),),
                   )
                 ],
               );
