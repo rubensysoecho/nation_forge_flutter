@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/screens/dashboard.dart';
+import 'package:nation_forge/screens/login.dart';
 import 'app_theme.dart';
 import 'blocs/nation_bloc.dart';
 import 'blocs/war_bloc.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
-        home: Dashboard(),
+        home: Login(),
       ),
     );
   }

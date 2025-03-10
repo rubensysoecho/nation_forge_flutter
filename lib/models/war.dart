@@ -1,4 +1,5 @@
 class War {
+  final String name;
   final AggressorCountry aggressorCountry;
   final DefenderCountry defenderCountry;
   final List<WarProgress> warProgress;
@@ -8,6 +9,7 @@ class War {
   final String winner;
 
   War({
+    required this.name,
     required this.aggressorCountry,
     required this.defenderCountry,
     required this.warProgress,
@@ -19,6 +21,7 @@ class War {
 
   factory War.fromJson(Map<String, dynamic> json) {
     return War(
+      name: json['name'],
       aggressorCountry: AggressorCountry.fromJson(json['aggressorCountry']),
       defenderCountry: DefenderCountry.fromJson(json['defenderCountry']),
       warProgress: (json['warProgress'] as List)
@@ -33,6 +36,7 @@ class War {
 
   Map<String, dynamic> toJson() {
     return {
+      'name': name,
       'aggressorCountry': aggressorCountry.toJson(),
       'defenderCountry': defenderCountry.toJson(),
       'warProgress': warProgress.map((e) => e.toJson()).toList(),

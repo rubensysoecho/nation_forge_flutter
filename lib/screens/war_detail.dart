@@ -12,7 +12,7 @@ class WarDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'War Details',
+          'Detalles de la guerra',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
@@ -46,7 +46,7 @@ class WarDetailPage extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.brown[700],
+        color: Color(0xFF3A2D1D),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -61,15 +61,14 @@ class WarDetailPage extends StatelessWidget {
           Icon(
             Icons.military_tech,
             size: 60,
-            color: Colors.white,
           ),
           const SizedBox(height: 8),
           Text(
             '${war.aggressorCountry.name} vs ${war.defenderCountry.name}',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              letterSpacing: 1.2,
             ),
             textAlign: TextAlign.center,
           ),

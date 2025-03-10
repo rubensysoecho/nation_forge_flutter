@@ -19,5 +19,21 @@ class WarBloc extends Bloc<WarEvent, WarState> {
         emit(WarError(e.toString()));
       }
     });
+
+    on<CreateWar>(
+          (event, emit) async {
+        try {
+          emit(WarLoading());
+          await _repository.createWar(
+            event.nationA,
+            event.nationB,
+            event.casusBelli,
+            event.age,
+          );
+        } catch (e) {
+          emit(WarError(e.toString()));
+        }
+      },
+    );
   }
 }
