@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:nation_forge/blocs/auth_bloc.dart';
 import 'package:nation_forge/models/war.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/nation.dart';
 
 class ApiService {
@@ -11,8 +12,14 @@ class ApiService {
   static const String baseUrl = 'http://${prodID}/api/nation';
   static const String warBaseUrl = 'http://${prodID}/api/war';
 
+  Future<String> userId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = await prefs.getString('user_id');
+    return userId!;
+  }
+
   Future<List<Nation>> fetchNations() async {
-    final response = await http.get(Uri.parse(baseUrl));
+    final response = await http.get(Uri.parse(baseUrl).replace(queryParameters: {'userId': userId()}));
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       List<Nation> nations = data.map((e) => Nation.fromJson(e)).toList();
@@ -26,7 +33,8 @@ class ApiService {
     final Map<String, dynamic> nationData = {
       "nationName": nationName,
       "governmentType": governmentType,
-      "age": age
+      "age": age,
+      "userId": userId()
     };
 
     final response = await http.post(
@@ -42,7 +50,8 @@ class ApiService {
   }
 
   Future<List<War>> fetchWars() async {
-    final response = await http.get(Uri.parse(warBaseUrl));
+    final uri = Uri.parse(warBaseUrl).replace(queryParameters: {'userId': userId()});
+    final response = await http.get(uri);
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       return data.map((e) => War.fromJson(e)).toList();
@@ -57,7 +66,8 @@ class ApiService {
       "nationB": nationB,
       "casusBelli": casusBelli,
       "age": age,
-      "optionalPrompt": ""
+      "optionalPrompt": "",
+      "userId": userId(),
     };
 
     final response = await http.post(
