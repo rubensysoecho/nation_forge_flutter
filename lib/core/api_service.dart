@@ -19,7 +19,9 @@ class ApiService {
   }
 
   Future<List<Nation>> fetchNations() async {
-    final response = await http.get(Uri.parse(baseUrl).replace(queryParameters: {'userId': userId()}));
+    final uri = Uri.parse(baseUrl).replace(queryParameters: {'userId': await userId()});
+    final response = await http.get(uri);
+
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       List<Nation> nations = data.map((e) => Nation.fromJson(e)).toList();
@@ -34,11 +36,11 @@ class ApiService {
       "nationName": nationName,
       "governmentType": governmentType,
       "age": age,
-      "userId": userId()
+      "userId": await userId()
     };
 
     final response = await http.post(
-      Uri.parse('http://${prodID}/api/nation/gemini'),
+      Uri.parse('https://${prodID}/api/nation/gemini'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(nationData),
     );
@@ -50,7 +52,7 @@ class ApiService {
   }
 
   Future<List<War>> fetchWars() async {
-    final uri = Uri.parse(warBaseUrl).replace(queryParameters: {'userId': userId()});
+    final uri = Uri.parse(warBaseUrl).replace(queryParameters: {'userId': await userId()});
     final response = await http.get(uri);
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -67,7 +69,7 @@ class ApiService {
       "casusBelli": casusBelli,
       "age": age,
       "optionalPrompt": "",
-      "userId": userId(),
+      "userId": await userId(),
     };
 
     final response = await http.post(
