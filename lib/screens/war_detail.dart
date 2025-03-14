@@ -103,7 +103,6 @@ class WarDetailPage extends StatelessWidget {
             _buildListSection(context, icon: Icons.check, title: 'Advantages', items: country.advantages),
             _buildListSection(context, icon: Icons.close, title: 'Disadvantages', items: country.disadvantages),
             _buildListSection(context, icon: Icons.build, title: 'Equipment', items: country.equipment),
-            _buildListSection(context, icon: Icons.build, title: 'Casus Belli', items: [country.casusBelli]),
           ],
         ),
       ),

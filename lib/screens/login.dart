@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nation_forge/screens/dashboard.dart';
@@ -20,10 +19,21 @@ class _LoginPageState extends State<LoginPage> {
     await prefs.setString('user_id', userId);
   }
 
+  Future<void> checkIfLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = await prefs.getString('user_id');
+    if (userId != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+    }
+  }
+
   Future<void> _signInWithEmailAndPassword() async {
     try {
       final UserCredential userCredential =
-      await _auth.signInWithEmailAndPassword(
+          await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -59,6 +69,12 @@ class _LoginPageState extends State<LoginPage> {
         fontSize: 16.0,
       );
     }
+  }
+
+  @override
+  void initState() {
+    checkIfLogin();
+    super.initState();
   }
 
   @override
@@ -112,7 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               labelText: 'Email',
                               labelStyle: TextStyle(color: Colors.white70),
-                              prefixIcon: Icon(Icons.email, color: Colors.white54),
+                              prefixIcon:
+                                  Icon(Icons.email, color: Colors.white54),
                               filled: true,
                               fillColor: Colors.white10,
                               border: OutlineInputBorder(
@@ -129,7 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               labelText: 'Contraseña',
                               labelStyle: TextStyle(color: Colors.white70),
-                              prefixIcon: Icon(Icons.lock, color: Colors.white54),
+                              prefixIcon:
+                                  Icon(Icons.lock, color: Colors.white54),
                               filled: true,
                               fillColor: Colors.white10,
                               border: OutlineInputBorder(
