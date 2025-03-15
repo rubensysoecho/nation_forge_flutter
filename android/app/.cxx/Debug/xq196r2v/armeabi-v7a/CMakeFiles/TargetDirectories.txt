@@ -1,0 +1,2 @@
+/Users/administrador/AndroidStudioProjects/nation_forge/android/app/.cxx/Debug/xq196r2v/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/administrador/AndroidStudioProjects/nation_forge/android/app/.cxx/Debug/xq196r2v/armeabi-v7a/CMakeFiles/rebuild_cache.dir

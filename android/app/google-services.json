@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "396040374256",
+    "project_id": "nation-forge-c1a12",
+    "storage_bucket": "nation-forge-c1a12.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396040374256:android:41e131cb6dbc6c5ae73f35",
+        "android_client_info": {
+          "package_name": "com.rubendev.nation_forge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqXBqdvCB0PQdJvJANhaoaFkAr1iV6qyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

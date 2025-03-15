@@ -1,0 +1,2 @@
+/Users/administrador/AndroidStudioProjects/nation_forge/android/app/.cxx/RelWithDebInfo/17s5e6y2/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/administrador/AndroidStudioProjects/nation_forge/android/app/.cxx/RelWithDebInfo/17s5e6y2/arm64-v8a/CMakeFiles/rebuild_cache.dir
