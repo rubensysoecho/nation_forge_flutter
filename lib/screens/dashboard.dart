@@ -5,7 +5,6 @@ import 'package:nation_forge/blocs/nation_event.dart';
 import 'package:nation_forge/blocs/war_bloc.dart';
 import 'package:nation_forge/screens/wars_list.dart';
 import '../blocs/nation_bloc.dart';
-import '../models/nation.dart';
 import 'nations_list.dart';
 
 class Dashboard extends StatefulWidget {
@@ -32,7 +31,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     context.read<NationBloc>().add(LoadNations());
-
     final warBloc = WarBloc();
     warBloc.add(LoadWars());
     super.initState();
@@ -49,65 +47,6 @@ class _DashboardState extends State<Dashboard> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              String nationName = '';
-              String governmentType = '';
-              String age = '';
-              return AlertDialog(
-                icon: Icon(Icons.flag),
-                title: const Text('Crear Nueva Nación'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Nombre de la nación',
-                      ),
-                      onChanged: (value) => nationName = value,
-                    ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Tipo de Gobierno',
-                      ),
-                      onChanged: (value) => governmentType = value,
-                    ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Época',
-                      ),
-                      onChanged: (value) => age = value,
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context
-                          .read<NationBloc>()
-                          .add(CreateNation(nationName, governmentType, age));
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Crear'),
-                  )
-                ],
-              );
-            },
-          );
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
