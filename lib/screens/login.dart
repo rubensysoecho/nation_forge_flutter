@@ -17,6 +17,12 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
+  @override
+  void initState() {
+    checkIfLogin();
+    super.initState();
+  }
+
   Future<void> saveSession(String userId) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_id', userId);
@@ -72,12 +78,6 @@ class _LoginPageState extends State<LoginPage> {
         fontSize: 16.0,
       );
     }
-  }
-
-  @override
-  void initState() {
-    checkIfLogin();
-    super.initState();
   }
 
   Future<dynamic> signInWithGoogle() async {
@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(24.0),
                       child: Column(
                         children: [
-                          TextField(
+                          /*TextField(
                             controller: _emailController,
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 10),*/
                           SignInButton(
                             buttonType: ButtonType.google,
                             onPressed: () {

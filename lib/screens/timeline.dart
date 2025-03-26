@@ -188,7 +188,7 @@ class Timeline extends StatelessWidget {
                       child: SingleChildScrollView(
                         child: Text(
                           event.description,
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.justify,
                           style: const TextStyle(fontSize: 16),
                         ),
                       ),
@@ -215,7 +215,7 @@ class Timeline extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0),
                     Text(
-                      DateFormat('dd MMMM, yyyy').format(event.date),
+                      '${event.date.day} de ${getMonth(event.date.month)}, ${event.date.year}',
                       style: const TextStyle(
                         fontSize: 14,
                         fontStyle: FontStyle.italic,
@@ -230,5 +230,36 @@ class Timeline extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String getMonth(int month) {
+    switch (month) {
+      case 1:
+        return "Enero";
+      case 2:
+        return "Febrero";
+      case 3:
+        return "Marzo";
+      case 4:
+        return "Abril";
+      case 5:
+        return "Mayo";
+      case 6:
+        return "Junio";
+      case 7:
+        return "Julio";
+      case 8:
+        return "Agosto";
+      case 9:
+        return "Septiembre";
+      case 10:
+        return "Octubre";
+      case 11:
+        return "Noviembre";
+      case 12:
+        return "Diciembre";
+      default:
+        return "Mes inválido";
+    }
   }
 }
