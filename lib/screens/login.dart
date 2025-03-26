@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nation_forge/screens/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_button/constants.dart';
+import 'package:sign_button/create_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> checkIfLogin() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = await prefs.getString('user_id');
-    if (userId != null) {
+    if (userId != null && userId != '') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),
@@ -75,6 +78,29 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     checkIfLogin();
     super.initState();
+  }
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', googleUser!.id);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(),));
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      // TODO
+      print('exception->$e');
+    }
   }
 
   @override
@@ -193,13 +219,14 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          /*TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              '¿Olvidaste tu contraseña?',
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                          ),*/
+                          SignInButton(
+                            buttonType: ButtonType.google,
+                            onPressed: () {
+                              /*GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
+                              _auth.signInWithProvider(_googleAuthProvider);*/
+                              signInWithGoogle();
+                            },
+                          )
                         ],
                       ),
                     ),

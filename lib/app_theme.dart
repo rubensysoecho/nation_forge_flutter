@@ -63,6 +63,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
+
     cardTheme: const CardTheme(
       color: Color(0xFF3A2D1D),
       shadowColor: Colors.black54,

@@ -11,6 +11,11 @@ class NationLoaded extends NationState {
   NationLoaded(this.nations);
 }
 
+class NationCreated extends NationState {
+  final Nation newNation;
+  NationCreated(this.newNation);
+}
+
 class NationError extends NationState {
   final String message;
   NationError(this.message);

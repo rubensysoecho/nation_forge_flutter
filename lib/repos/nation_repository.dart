@@ -1,4 +1,4 @@
-import '../core/api_service.dart';
+import '../core/nation_api_service.dart';
 import '../models/nation.dart';
 
 class NationRepository {

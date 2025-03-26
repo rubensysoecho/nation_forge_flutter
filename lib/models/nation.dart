@@ -1,3 +1,5 @@
+import 'package:nation_forge/models/event.dart';
+
 class Nation {
   final String id;
   final String nationName;
@@ -7,6 +9,8 @@ class Nation {
   final String population;
   final List<String> historicalCuriosities;
   final List<String> importantCharacters;
+  final List<Event> events;
+
   final DateTime createdAt;
 
   Nation({
@@ -18,19 +22,23 @@ class Nation {
     required this.population,
     required this.historicalCuriosities,
     required this.importantCharacters,
+    required this.events,
     required this.createdAt,
   });
 
   factory Nation.fromJson(Map<String, dynamic> json) {
     return Nation(
       id: json['_id'],
-      nationName: json['nation_name'],
-      historicalContext: json['historical_context'],
-      geopoliticalContext: json['geopolitical_context'],
+      nationName: json['name'],
+      historicalContext: json['historicalContext'],
+      geopoliticalContext: json['geopoliticalContext'],
       politics: json['politics'],
       population: json['population'],
-      historicalCuriosities: List<String>.from(json['historical_curiosities']),
-      importantCharacters: List<String>.from(json['important_characters']),
+      historicalCuriosities: List<String>.from(json['historicalCuriosities']),
+      importantCharacters: List<String>.from(json['importantCharacters']),
+      events: (json['events'] as List)
+          .map((eventJson) => Event.fromJson(eventJson))
+          .toList(),
       createdAt: DateTime.parse(json['created_at']),
     );
   }
@@ -38,13 +46,14 @@ class Nation {
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
-      'nation_name': nationName,
-      'historical_context': historicalContext,
-      'geopolitical_context': geopoliticalContext,
+      'nationName': nationName,
+      'historicalContext': historicalContext,
+      'geopoliticalContext': geopoliticalContext,
       'politics': politics,
       'population': population,
-      'historical_curiosities': historicalCuriosities,
-      'important_characters': importantCharacters,
+      'historicalCuriosities': historicalCuriosities,
+      'importantCharacters': importantCharacters,
+      // 'events': events, // Comentado porque no se está utilizando por ahora.
       'created_at': createdAt.toIso8601String(),
     };
   }

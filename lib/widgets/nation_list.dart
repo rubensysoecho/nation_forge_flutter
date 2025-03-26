@@ -8,6 +8,7 @@ import '../blocs/nation_state.dart';
 import '../models/nation.dart';
 
 class NationList extends StatefulWidget {
+  List<Nation> nationsList = [];
   @override
   State<NationList> createState() => _NationListState();
 }
@@ -24,13 +25,15 @@ class _NationListState extends State<NationList> {
       child: ListTile(
         leading: const Icon(Icons.flag),
         title: Text(nation.nationName),
-        subtitle: Text(nation.id),
+        subtitle: Text(nation.createdAt.toString()),
         trailing: IconButton(
           icon: const Icon(Icons.arrow_forward),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NationDetailPage(nation: nation)),
+              MaterialPageRoute(
+                builder: (context) => NationDetailPage(nation: nation),
+              ),
             );
           },
         ),
@@ -40,8 +43,7 @@ class _NationListState extends State<NationList> {
 
   Widget _buildLoadingNationCard() {
     return FadeTransition(
-      opacity: Tween<double>(begin: 0.6, end: 1.0)
-          .animate(AnimationController(
+      opacity: Tween<double>(begin: 0.6, end: 1.0).animate(AnimationController(
         vsync: Navigator.of(context),
         duration: const Duration(milliseconds: 800),
       )..repeat(reverse: true)),
@@ -50,7 +52,8 @@ class _NationListState extends State<NationList> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           leading: Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
@@ -104,36 +107,31 @@ class _NationListState extends State<NationList> {
   }
 
   Widget _buildNoNationsView() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Center(child: Text('No hay naciones disponibles')),
-        IconButton(
-          onPressed: () => context.read<NationBloc>().add(LoadNations()),
-          icon: const Icon(Icons.refresh),
-        ),
-      ],
-    );
+    return const Center(child: Text('No hay naciones disponibles'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<NationBloc, NationState>(
-        builder: (context, state) {
-          switch (state) {
-            case NationLoading():
-              return ListView.builder(
-                itemCount: 1,
-                itemBuilder: (context, index) => _buildLoadingNationCard(),
-              );
-
-            case NationLoaded():
-              return state.nations.isNotEmpty ? _buildNationList(state.nations) : _buildNoNationsView();
-
-            default:
-              return _buildNoNationsView();
+      child: BlocConsumer<NationBloc, NationState>(
+        listener: (context, state) {
+          if (state is NationCreated) {
+            widget.nationsList.add(state.newNation);
           }
+          if (state is NationLoaded) {
+            widget.nationsList = state.nations;
+          }
+        },
+        builder: (context, state) {
+          if (state is NationLoading) {
+            return ListView.builder(
+              itemCount: 1,
+              itemBuilder: (context, index) => _buildLoadingNationCard(),
+            );
+          }
+          return widget.nationsList.isNotEmpty
+              ? _buildNationList(widget.nationsList)
+              : _buildNoNationsView();
         },
       ),
     );

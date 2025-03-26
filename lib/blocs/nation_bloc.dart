@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nation_forge/models/nation.dart';
 import '../repos/nation_repository.dart';
 import 'nation_event.dart';
 import 'nation_state.dart';
@@ -13,21 +14,19 @@ class NationBloc extends Bloc<NationEvent, NationState> {
         final nations = await _repository.getNations();
         return emit(NationLoaded(nations));
       } catch (e) {
-        emit(NationError(e.toString()));
+        return emit(NationError("Loading Error: $e"));
       }
     });
 
     on<CreateNation>(
       (event, emit) async {
+        emit(NationLoading());
         try {
-          emit(NationLoading());
-          await _repository.createNation(
-            event.nationName,
-            event.governmentType,
-            event.age,
-          );
+          final newNation = await _repository.createNation(
+              event.nationName, event.governmentType, event.age);
+          return emit(NationCreated(newNation));
         } catch (e) {
-          emit(NationError(e.toString()));
+          return emit(NationError("Creating Error: $e"));
         }
       },
     );

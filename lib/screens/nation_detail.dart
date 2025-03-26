@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nation_forge/screens/timeline.dart';
 
 import '../models/nation.dart';
+import '../models/event.dart';
 
-class NationDetailPage extends StatelessWidget {
+class NationDetailPage extends StatefulWidget {
   final Nation nation;
 
-  NationDetailPage({required this.nation});
+  const NationDetailPage({Key? key, required this.nation}) : super(key: key);
+
+  @override
+  State<NationDetailPage> createState() => _NationDetailPageState();
+}
+
+class _NationDetailPageState extends State<NationDetailPage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +23,7 @@ class NationDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          nation.nationName,
+          widget.nation.nationName,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
@@ -23,52 +32,94 @@ class NationDetailPage extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _buildHeader(context),
-            const SizedBox(height: 20),
-            _buildInfoSection(
-              context,
-              icon: Icons.history,
-              title: 'Contexto Histórico',
-              content: nation.historicalContext,
-            ),
-            _buildInfoSection(
-              context,
-              icon: Icons.public,
-              title: 'Contexto Geopolítico',
-              content: nation.geopoliticalContext,
-            ),
-            _buildInfoSection(
-              context,
-              icon: Icons.account_balance,
-              title: 'Política',
-              content: nation.politics,
-            ),
-            _buildInfoSection(
-              context,
-              icon: Icons.people,
-              title: 'Población',
-              content: nation.population,
-            ),
-            _buildListSection(
-              context,
-              icon: Icons.lightbulb,
-              title: 'Curiosidades Históricas',
-              items: nation.historicalCuriosities,
-            ),
-            _buildListSection(
-              context,
-              icon: Icons.person,
-              title: 'Personajes Importantes',
-              items: nation.importantCharacters,
-            ),
-            _buildCreationDate(context),
-          ],
-        ),
+      body: _buildBody(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'Detalles',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timeline),
+            label: 'Timeline',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget _buildBody(int index) {
+    switch (index) {
+      case 0:
+        return _buildDetailView();
+      case 1:
+        return Timeline(
+            events: widget.nation.events, nationName: widget.nation.nationName);
+      case 2:
+        return Placeholder();
+      default:
+        return _buildDetailView();
+    }
+  }
+
+  Widget _buildDetailView() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildHeader(context),
+          const SizedBox(height: 20),
+          _buildInfoSection(
+            context,
+            icon: Icons.history,
+            title: 'Contexto Histórico',
+            content: widget.nation.historicalContext,
+          ),
+          _buildInfoSection(
+            context,
+            icon: Icons.public,
+            title: 'Contexto Geopolítico',
+            content: widget.nation.geopoliticalContext,
+          ),
+          _buildInfoSection(
+            context,
+            icon: Icons.account_balance,
+            title: 'Política',
+            content: widget.nation.politics,
+          ),
+          _buildInfoSection(
+            context,
+            icon: Icons.people,
+            title: 'Población',
+            content: widget.nation.population,
+          ),
+          _buildListSection(
+            context,
+            icon: Icons.lightbulb,
+            title: 'Curiosidades Históricas',
+            items: widget.nation.historicalCuriosities,
+          ),
+          _buildListSection(
+            context,
+            icon: Icons.person,
+            title: 'Personajes Importantes',
+            items: widget.nation.importantCharacters,
+          ),
+          _buildCreationDate(context),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
@@ -93,11 +144,10 @@ class NationDetailPage extends StatelessWidget {
           Icon(
             Icons.flag_circle,
             size: 60,
-
           ),
           const SizedBox(height: 8),
           Text(
-            nation.nationName,
+            widget.nation.nationName,
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -111,11 +161,11 @@ class NationDetailPage extends StatelessWidget {
   }
 
   Widget _buildInfoSection(
-      BuildContext context, {
-        required IconData icon,
-        required String title,
-        required String content,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String content,
+  }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
@@ -153,11 +203,11 @@ class NationDetailPage extends StatelessWidget {
   }
 
   Widget _buildListSection(
-      BuildContext context, {
-        required IconData icon,
-        required String title,
-        required List<String> items,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required List<String> items,
+  }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,
@@ -182,28 +232,28 @@ class NationDetailPage extends StatelessWidget {
             ),
             const Divider(height: 16),
             ...items.map((item) => Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.arrow_right,
-                    color: Theme.of(context).colorScheme.secondary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      item,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        height: 1.4,
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.arrow_right,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 20,
                       ),
-                    ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )),
+                )),
           ],
         ),
       ),
@@ -243,7 +293,8 @@ class NationDetailPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  DateFormat('dd MMMM, yyyy - HH:mm').format(nation.createdAt),
+                  DateFormat('dd MMMM, yyyy - HH:mm')
+                      .format(widget.nation.createdAt),
                   style: const TextStyle(
                     fontSize: 16,
                     fontStyle: FontStyle.italic,

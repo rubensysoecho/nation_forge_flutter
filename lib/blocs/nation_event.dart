@@ -9,3 +9,9 @@ class CreateNation extends NationEvent {
   final String age;
   CreateNation(this.nationName, this.governmentType, this.age);
 }
+
+class AddEvent extends NationEvent  {
+  final String type;
+  final String event;
+  AddEvent(this.type, this.event);
+}
