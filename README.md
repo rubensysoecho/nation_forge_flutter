@@ -1,4 +1,4 @@
-# Proyecto de Historia Alternativa 🌍
+# Nation Forge: Historia Alternativa 🌍
 
 ## Descripción
 
@@ -10,10 +10,6 @@ Este proyecto genera relatos detallados e inmersivos sobre naciones ficticias en
 * Contexto histórico, geopolítico y político de las naciones ficticias 🗺️.
 * Descripción de la población, curiosidades históricas y personajes importantes 👨‍👩‍👧‍👦.
 * Integración creíble de naciones ficticias en la historia real 🤝.
-
-## Cómo Utilizar
-
-El proyecto se utiliza para generar un relato histórico de una nación ficticia basado en los parámetros proporcionados.
 
 ###   Parámetros de Entrada
 
