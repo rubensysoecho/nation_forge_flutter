@@ -14,22 +14,20 @@ class WarBloc extends Bloc<WarEvent, WarState> {
       emit(WarLoading());
       try {
         final wars = await _repository.getWars();
-        return emit(WarLoaded(wars));
+        emit(WarLoaded(wars));
       } catch (e) {
         emit(WarError(e.toString()));
       }
     });
 
     on<CreateWar>(
-          (event, emit) async {
+      (event, emit) async {
+        emit(WarLoading());
         try {
-          emit(WarLoading());
           await _repository.createWar(
-            event.nationA,
-            event.nationB,
-            event.casusBelli,
-            event.age,
-          );
+              event.nationA, event.nationB, event.casusBelli, event.age);
+          final updatedWars = await _repository.getWars();
+          emit(WarLoaded(updatedWars));
         } catch (e) {
           emit(WarError(e.toString()));
         }
