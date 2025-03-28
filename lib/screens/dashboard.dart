@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nation_forge/app_theme.dart';
 import 'package:nation_forge/blocs/nation_event.dart';
 import 'package:nation_forge/screens/wars_list.dart';
@@ -40,17 +41,28 @@ class _DashboardState extends State<Dashboard> {
           content: const Text('¿Seguro que quieres cerrar sesión?'),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancelar', style: TextStyle(color: Colors.white),),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Text('Aceptar', style: TextStyle(color: Colors.white),),
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setString('user_id', '');
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                await GoogleSignIn().signOut();
                 await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
               },
             ),
           ],

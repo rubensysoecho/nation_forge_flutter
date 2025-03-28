@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
 
+import '../app_theme.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -16,11 +18,12 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void initState() {
-    checkIfLogin();
     super.initState();
+    checkIfLogin();
   }
 
   Future<void> saveSession(String userId) async {
@@ -30,8 +33,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> checkIfLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = await prefs.getString('user_id');
-    if (userId != null && userId != '') {
+    final userId = prefs.getString('user_id');
+    if (userId != null && userId.isNotEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),
@@ -42,15 +45,24 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _signInWithEmailAndPassword() async {
     try {
       final UserCredential userCredential =
-          await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
       if (userCredential.user != null) {
-        saveSession(userCredential.user!.uid);
+        await saveSession(userCredential.user!.uid);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: 'No se pudo iniciar sesión. Usuario es nulo.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -80,27 +92,63 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<dynamic> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-      final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+      /*if (googleAuth?.accessToken == null || googleAuth?.idToken == null) {
+        Fluttertoast.showToast(
+          msg: 'Error al obtener el token de autenticación de Google.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        return;
+      }*/
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('user_id', googleUser!.id);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(),));
-
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on Exception catch (e) {
-      // TODO
-      print('exception->$e');
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      await saveSession(userCredential.user!.uid);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+      
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error de Firebase al iniciar sesión con Google: ${e.message}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print('FirebaseAuthException: $e');
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error inesperado al iniciar sesión con Google: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print('Exception: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -155,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: 'Email',
                               labelStyle: TextStyle(color: Colors.white70),
                               prefixIcon:
-                                  Icon(Icons.email, color: Colors.white54),
+                              Icon(Icons.email, color: Colors.white54),
                               filled: true,
                               fillColor: Colors.white10,
                               border: OutlineInputBorder(
@@ -173,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: 'Contraseña',
                               labelStyle: TextStyle(color: Colors.white70),
                               prefixIcon:
-                                  Icon(Icons.lock, color: Colors.white54),
+                              Icon(Icons.lock, color: Colors.white54),
                               filled: true,
                               fillColor: Colors.white10,
                               border: OutlineInputBorder(
@@ -222,11 +270,15 @@ class _LoginPageState extends State<LoginPage> {
                           SignInButton(
                             buttonType: ButtonType.google,
                             onPressed: () {
-                              /*GoogleAuthProvider _googleAuthProvider = GoogleAuthProvider();
-                              _auth.signInWithProvider(_googleAuthProvider);*/
                               signInWithGoogle();
                             },
-                          )
+                          ), ElevatedButton(onPressed: () async {
+                            await saveSession('testuser');
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Dashboard()),
+                            );
+                          }, child: Text('Testear'))
                         ],
                       ),
                     ),
@@ -240,3 +292,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
