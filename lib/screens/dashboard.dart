@@ -57,11 +57,11 @@ class _DashboardState extends State<Dashboard> {
                 prefs.setString('user_id', '');
                 await GoogleSignIn().signOut();
                 await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => LoginPage(),
-                  ),
+                  ),(route) => false,
                 );
               },
             ),

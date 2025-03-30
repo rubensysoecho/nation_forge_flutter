@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/screens/login.dart';
 import 'app_theme.dart';
+import 'blocs/auth_bloc.dart';
 import 'blocs/nation_bloc.dart';
 import 'blocs/war_bloc.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<WarBloc>(create: (context) => WarBloc()),
         BlocProvider<NationBloc>(create: (context) => NationBloc()),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
       ],
       child: MaterialApp(
         title: 'Historical Nation Generator',

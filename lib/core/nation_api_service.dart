@@ -43,7 +43,8 @@ class ApiService {
       body: json.encode(nationData),
     );
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return Nation.fromJson(json.decode(response.body)['nation']);
+      final nation = json.decode(response.body)['nation'];
+      return Nation.fromJson(nation);
     } else {
       throw Exception('Failed to create nation');
     }
