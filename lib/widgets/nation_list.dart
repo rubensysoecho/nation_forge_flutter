@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/screens/nation_detail.dart';
 import '../blocs/nation_bloc.dart';
-import '../blocs/nation_event.dart';
 import '../blocs/nation_state.dart';
-import '../models/nation.dart';
+import '../models/nation/nation.dart';
 
 class NationList extends StatefulWidget {
   List<Nation> nationsList = [];

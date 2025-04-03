@@ -1,5 +1,5 @@
 import '../core/war_api_service.dart';
-import '../models/war.dart';
+import '../models/war/war.dart';
 
 class WarRepository {
   final WarApiService _apiService = WarApiService();

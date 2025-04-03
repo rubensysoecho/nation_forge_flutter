@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nation_forge/screens/timeline.dart';
 
-import '../models/nation.dart';
-import '../models/event.dart';
+import '../models/nation/nation.dart';
 
 class NationDetailPage extends StatefulWidget {
   final Nation nation;
@@ -19,7 +18,6 @@ class _NationDetailPageState extends State<NationDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(

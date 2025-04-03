@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/blocs/war_bloc.dart';
 import 'package:nation_forge/widgets/war_list.dart';
 
-import '../models/war.dart';
+import '../models/war/war.dart';
 
 class WarsList extends StatefulWidget {
   const WarsList({super.key});

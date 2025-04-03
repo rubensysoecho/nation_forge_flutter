@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nation_forge/models/nation.dart';
+import 'package:nation_forge/models/nation/nation.dart';
 import '../repos/nation_repository.dart';
 import 'nation_event.dart';
 import 'nation_state.dart';

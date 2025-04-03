@@ -1,5 +1,5 @@
 import '../core/nation_api_service.dart';
-import '../models/war.dart';
+import '../models/war/war.dart';
 
 class AuthRepository {
   final ApiService _apiService = ApiService();

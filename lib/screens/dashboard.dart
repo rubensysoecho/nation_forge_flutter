@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/nation_bloc.dart';
 import 'login.dart';
 import 'nations_list.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -19,6 +20,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
+  String _version = 'Cargando...';
 
   final List<Widget> _pages = [
     NationsList(),
@@ -73,10 +75,21 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    context.read<NationBloc>().add(LoadNations());
-    //final warBloc = WarBloc();
-    //warBloc.add(LoadWars());
     super.initState();
+    _initVersion();
+    context.read<NationBloc>().add(LoadNations());
+  }
+
+  Future<void> _initVersion() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      setState(() {
+        _version = 'v${packageInfo.version}';
+      });
+    } catch (e) {
+      print('Error al obtener la versión: $e');
+      _version = 'Error';
+    }
   }
 
   @override
@@ -98,24 +111,22 @@ class _DashboardState extends State<Dashboard> {
         ),
         centerTitle: true,
       ),
-      /*bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.flag),
-            label: 'Naciones',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports),
-            label: 'Guerras Generadas',
+      body: Stack(
+        children: [
+          NationsList(),
+          Positioned(
+            bottom: 10.0,
+            right: 10.0,
+            child: Text(
+              _version,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey,
+              ),
+            ),
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-      ),*/
-      body: NationsList(),
+      ),
     );
   }
 }

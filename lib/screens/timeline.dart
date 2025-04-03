@@ -4,7 +4,7 @@ import 'package:nation_forge/widgets/addable_event.dart';
 
 import '../app_theme.dart';
 
-import '../models/event.dart';
+import '../models/nation/event.dart';
 
 class Timeline extends StatelessWidget {
   final List<Event> events;

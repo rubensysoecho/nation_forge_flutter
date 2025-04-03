@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:nation_forge/models/war.dart';
+import 'package:nation_forge/models/war/war.dart';
 import 'package:nation_forge/repos/war_repository.dart';
 
 part 'war_event.dart';

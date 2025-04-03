@@ -1,4 +1,4 @@
-import '../models/nation.dart';
+import '../models/nation/nation.dart';
 
 abstract class NationState {}
 

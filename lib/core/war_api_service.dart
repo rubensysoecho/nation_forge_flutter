@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:nation_forge/models/war.dart';
+import 'package:nation_forge/models/war/war.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/nation.dart';
+import '../models/nation/nation.dart';
 
 class WarApiService {
   static const String prodID = 'nation-forge-backend.onrender.com';
