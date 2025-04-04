@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/blocs/war_bloc.dart';
 import 'package:nation_forge/screens/war_detail.dart';
-import '../models/war.dart';
+import '../models/war/war.dart';
 
 class WarList extends StatefulWidget {
   @override

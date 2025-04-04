@@ -1,5 +1,5 @@
 import '../core/nation_api_service.dart';
-import '../models/nation.dart';
+import '../models/nation/nation.dart';
 
 class NationRepository {
   final ApiService _apiService = ApiService();

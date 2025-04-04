@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:nation_forge/models/war.dart';
+import 'package:nation_forge/models/war/war.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/nation.dart';
+import '../models/nation/nation.dart';
 
 class ApiService {
   static const String prodID = 'nation-forge-backend.onrender.com';
@@ -43,7 +43,8 @@ class ApiService {
       body: json.encode(nationData),
     );
     if (response.statusCode == 201 || response.statusCode == 200) {
-      return Nation.fromJson(json.decode(response.body)['nation']);
+      final nation = json.decode(response.body)['nation'];
+      return Nation.fromJson(nation);
     } else {
       throw Exception('Failed to create nation');
     }

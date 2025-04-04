@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/war.dart';
+import '../models/war/war.dart';
 
 class WarDetailPage extends StatelessWidget {
   final War war;

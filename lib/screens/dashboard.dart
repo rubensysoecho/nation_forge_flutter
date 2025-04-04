@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nation_forge/app_theme.dart';
 import 'package:nation_forge/blocs/nation_event.dart';
 import 'package:nation_forge/screens/wars_list.dart';
@@ -8,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/nation_bloc.dart';
 import 'login.dart';
 import 'nations_list.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -18,6 +20,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
+  String _version = 'Cargando...';
 
   final List<Widget> _pages = [
     NationsList(),
@@ -40,17 +43,28 @@ class _DashboardState extends State<Dashboard> {
           content: const Text('¿Seguro que quieres cerrar sesión?'),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancelar', style: TextStyle(color: Colors.white),),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Text('Aceptar', style: TextStyle(color: Colors.white),),
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setString('user_id', '');
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                await GoogleSignIn().signOut();
                 await FirebaseAuth.instance.signOut();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),(route) => false,
+                );
               },
             ),
           ],
@@ -61,10 +75,21 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    context.read<NationBloc>().add(LoadNations());
-    //final warBloc = WarBloc();
-    //warBloc.add(LoadWars());
     super.initState();
+    _initVersion();
+    context.read<NationBloc>().add(LoadNations());
+  }
+
+  Future<void> _initVersion() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      setState(() {
+        _version = 'v${packageInfo.version}';
+      });
+    } catch (e) {
+      print('Error al obtener la versión: $e');
+      _version = 'Error';
+    }
   }
 
   @override
@@ -86,24 +111,22 @@ class _DashboardState extends State<Dashboard> {
         ),
         centerTitle: true,
       ),
-      /*bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.flag),
-            label: 'Naciones',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports),
-            label: 'Guerras Generadas',
+      body: Stack(
+        children: [
+          NationsList(),
+          Positioned(
+            bottom: 10.0,
+            right: 10.0,
+            child: Text(
+              _version,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey,
+              ),
+            ),
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-      ),*/
-      body: NationsList(),
+      ),
     );
   }
 }

@@ -1,11 +1,12 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nation_forge/models/event.dart';
-import 'package:nation_forge/models/nation.dart';
 import 'package:nation_forge/screens/login.dart';
-import 'package:nation_forge/screens/timeline.dart';
 import 'app_theme.dart';
+import 'blocs/auth_bloc.dart';
 import 'blocs/nation_bloc.dart';
 import 'blocs/war_bloc.dart';
 
@@ -13,7 +14,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
-}
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack)  {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+} 
 
 class MyApp extends StatelessWidget {
   @override
@@ -22,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<WarBloc>(create: (context) => WarBloc()),
         BlocProvider<NationBloc>(create: (context) => NationBloc()),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
       ],
       child: MaterialApp(
         title: 'Historical Nation Generator',

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:nation_forge/screens/nation_detail.dart';
+import 'package:nation_forge/screens/nation/details/nation_detail.dart';
 import '../blocs/nation_bloc.dart';
-import '../blocs/nation_event.dart';
 import '../blocs/nation_state.dart';
-import '../models/nation.dart';
+import '../models/nation/nation.dart';
 
 class NationList extends StatefulWidget {
   List<Nation> nationsList = [];
@@ -14,10 +13,6 @@ class NationList extends StatefulWidget {
 }
 
 class _NationListState extends State<NationList> {
-  Future<void> _refresh() async {
-    context.read<NationBloc>().add(LoadNations());
-  }
-
   Widget _buildNationCard(Nation nation) {
     return Card(
       elevation: 3,
@@ -25,7 +20,8 @@ class _NationListState extends State<NationList> {
       child: ListTile(
         leading: const Icon(Icons.flag),
         title: Text(nation.nationName),
-        subtitle: Text(nation.createdAt.toString()),
+        subtitle: Text(
+            'Creado el ${nation.createdAt.day}/${nation.createdAt.month}/${nation.createdAt.year}'),
         trailing: IconButton(
           icon: const Icon(Icons.arrow_forward),
           onPressed: () {
@@ -96,13 +92,9 @@ class _NationListState extends State<NationList> {
   }
 
   Widget _buildNationList(List<Nation> nations) {
-    return RefreshIndicator(
-      color: Theme.of(context).primaryColor,
-      onRefresh: _refresh,
-      child: ListView.builder(
-        itemCount: nations.length,
-        itemBuilder: (context, index) => _buildNationCard(nations[index]),
-      ),
+    return ListView.builder(
+      itemCount: nations.length,
+      itemBuilder: (context, index) => _buildNationCard(nations[index]),
     );
   }
 

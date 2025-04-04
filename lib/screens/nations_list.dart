@@ -16,6 +16,9 @@ class NationsList extends StatefulWidget {
 }
 
 class _NationsListState extends State<NationsList> {
+  Future<void> _refresh() async {
+    context.read<NationBloc>().add(LoadNations());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +41,17 @@ class _NationsListState extends State<NationsList> {
             Fluttertoast.showToast(msg: state.message);
           }
         },
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-            ),
-            NationList(),
-          ],
+        child: RefreshIndicator(
+          color: Theme.of(context).primaryColor,
+          onRefresh: _refresh,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+              ),
+              NationList(),
+            ],
+          ),
         ),
       ),
     );
