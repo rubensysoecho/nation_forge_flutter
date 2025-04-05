@@ -19,6 +19,7 @@ class _NationsListState extends State<NationsList> {
   Future<void> _refresh() async {
     context.read<NationBloc>().add(LoadNations());
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

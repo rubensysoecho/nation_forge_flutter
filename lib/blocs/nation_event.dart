@@ -1,4 +1,3 @@
-
 abstract class NationEvent {}
 
 class LoadNations extends NationEvent {}
@@ -14,4 +13,9 @@ class AddEvent extends NationEvent  {
   final String type;
   final String event;
   AddEvent(this.type, this.event);
+}
+
+class DeleteNation extends NationEvent {
+  final String nationId;
+  DeleteNation(this.nationId);
 }

@@ -30,5 +30,20 @@ class NationBloc extends Bloc<NationEvent, NationState> {
         }
       },
     );
+    
+    on<DeleteNation>((event, emit) async {
+      emit(NationLoading());
+      try {
+        final success = await _repository.deleteNation(event.nationId);
+        if (success) {
+          final nations = await _repository.getNations();
+          return emit(NationLoaded(nations));
+        } else {
+          return emit(NationError("Delete operation failed"));
+        }
+      } catch (e) {
+        return emit(NationError("Delete Error: $e"));
+      }
+    });
   }
 }

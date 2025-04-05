@@ -8,7 +8,7 @@ import '../models/nation/nation.dart';
 class ApiService {
   static const String prodID = 'nation-forge-backend.onrender.com';
   static const String devID = 'nation-forge-backend-dev.onrender.com';
-  static const String baseUrl = 'https://${devID}/api/nation/';
+  static const String baseUrl = 'https://${prodID}/api/nation/';
 
   Future<String> userId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -47,6 +47,17 @@ class ApiService {
       return Nation.fromJson(nation);
     } else {
       throw Exception('Failed to create nation');
+    }
+  }
+  
+  Future<bool> deleteNation(String nationId) async {
+    final uri = Uri.parse('$baseUrl$nationId');
+    final response = await http.delete(uri);
+    
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      return true;
+    } else {
+      throw Exception('Failed to delete nation');
     }
   }
 

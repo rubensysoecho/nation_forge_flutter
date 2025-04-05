@@ -7,4 +7,6 @@ class NationRepository {
   Future<List<Nation>> getNations() => _apiService.fetchNations();
 
   Future<Nation> createNation(String nationName, String governmentType, String age) => _apiService.createNation(nationName, governmentType, age);
+  
+  Future<bool> deleteNation(String nationId) => _apiService.deleteNation(nationId);
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/screens/nation/details/nation_detail.dart';
 import '../blocs/nation_bloc.dart';
+import '../blocs/nation_event.dart';
 import '../blocs/nation_state.dart';
 import '../models/nation/nation.dart';
 
@@ -14,24 +15,61 @@ class NationList extends StatefulWidget {
 
 class _NationListState extends State<NationList> {
   Widget _buildNationCard(Nation nation) {
-    return Card(
-      elevation: 3,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        leading: const Icon(Icons.flag),
-        title: Text(nation.nationName),
-        subtitle: Text(
-            'Creado el ${nation.createdAt.day}/${nation.createdAt.month}/${nation.createdAt.year}'),
-        trailing: IconButton(
-          icon: const Icon(Icons.arrow_forward),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NationDetailPage(nation: nation),
-              ),
+    return Dismissible(
+      key: Key(nation.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20.0),
+        color: Colors.red,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+      ),
+      confirmDismiss: (direction) async {
+        return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirmar eliminación'),
+              content: Text('¿Estás seguro que deseas eliminar la nación "${nation.nationName}"?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Eliminar'),
+                ),
+              ],
             );
           },
+        );
+      },
+      onDismissed: (direction) {
+        context.read<NationBloc>().add(DeleteNation(nation.id));
+      },
+      child: Card(
+        elevation: 3,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: ListTile(
+          leading: const Icon(Icons.flag),
+          title: Text(nation.nationName),
+          subtitle: Text(
+              'Creado el ${nation.createdAt.day}/${nation.createdAt.month}/${nation.createdAt.year}'),
+          trailing: IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NationDetailPage(nation: nation),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -93,13 +131,59 @@ class _NationListState extends State<NationList> {
 
   Widget _buildNationList(List<Nation> nations) {
     return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: nations.length,
       itemBuilder: (context, index) => _buildNationCard(nations[index]),
     );
   }
 
   Widget _buildNoNationsView() {
-    return const Center(child: Text('No hay naciones disponibles'));
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.3,
+        ),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.flag,
+                size: 80,
+                color: Colors.grey[400],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'No hay naciones disponibles',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Pulsa + para crear una nueva nación',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[500],
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Desliza hacia abajo para actualizar',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[400],
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override

@@ -151,46 +151,6 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.all(24.0),
                           child: Column(
                             children: [
-                              /*TextField(
-                                controller: _emailController,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  labelStyle: TextStyle(color: Colors.white70),
-                                  prefixIcon:
-                                  Icon(Icons.email, color: Colors.white54),
-                                  filled: true,
-                                  fillColor: Colors.white10,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 16),
-                              TextField(
-                                controller: _passwordController,
-                                obscureText: true,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  labelText: 'Contraseña',
-                                  labelStyle: TextStyle(color: Colors.white70),
-                                  prefixIcon:
-                                  Icon(Icons.lock, color: Colors.white54),
-                                  filled: true,
-                                  fillColor: Colors.white10,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
-                              ),*/
-                              //SizedBox(height: 20),
-                              /*LoginButton(
-                                emailController: _emailController,
-                                passwordController: _passwordController,
-                              ),*/
-                              SizedBox(height: 10),
                               SignInButton(
                                 buttonType: ButtonType.google,
                                 onPressed: () {
@@ -199,16 +159,6 @@ class _LoginPageState extends State<LoginPage> {
                                       .add(AuthLoginGoogle());
                                 },
                               ),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    await saveSession('testuser');
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Dashboard()),
-                                    );
-                                  },
-                                  child: Text('Testear'))
                             ],
                           ),
                         ),
