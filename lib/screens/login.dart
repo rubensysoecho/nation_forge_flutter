@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nation_forge/l10n/app_localizations.dart';
 import 'package:nation_forge/screens/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_button/constants.dart';
@@ -79,6 +80,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -96,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Nation Forge',
+                    localizations.appTitle,
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -105,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'La historia es tuya.',
+                    localizations.slogan,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white70,
@@ -125,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       if (state is AuthError) {
                         Fluttertoast.showToast(
-                          msg: 'Error: ${state.message}',
+                          msg: '${localizations.error}: ${state.message}',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           backgroundColor: Colors.red,

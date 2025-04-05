@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/app_theme.dart';
+import 'package:nation_forge/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/screens/nation/details/nation_detail.dart';
 import '../blocs/nation_bloc.dart';
 import '../blocs/nation_event.dart';
 import '../blocs/nation_state.dart';
 import '../models/nation/nation.dart';
+import '../l10n/app_localizations.dart'; // Importación añadida
 
 class NationList extends StatefulWidget {
   List<Nation> nationsList = [];
@@ -35,16 +37,18 @@ class _NationListState extends State<NationList> {
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: AppTheme.primaryColor,
-              title: const Text('Confirmar eliminación'),
-              content: Text('¿Estás seguro que deseas eliminar la nación "${nation.nationName}"?'),
+              title: Text(context.localization.confirmDeletion),
+              content: Text(
+                context.localization.deletionConfirmation.replaceAll('{name}', nation.nationName)
+              ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancelar', style: TextStyle(color: Colors.white)),
+                  child: Text(context.localization.cancel, style: const TextStyle(color: Colors.white)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+                  child: Text(context.localization.delete, style: const TextStyle(color: Colors.white)),
                 ),
               ],
             );
@@ -140,7 +144,7 @@ class _NationListState extends State<NationList> {
     );
   }
 
-  Widget _buildNoNationsView() {
+  Widget _buildNoNationsView() {  
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       children: [
@@ -158,7 +162,7 @@ class _NationListState extends State<NationList> {
               ),
               const SizedBox(height: 16),
               Text(
-                'No hay naciones disponibles',
+                context.localization.noNationsAvailable,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -167,7 +171,7 @@ class _NationListState extends State<NationList> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Pulsa + para crear una nueva nación',
+                context.localization.createNationHint,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[500],
@@ -175,7 +179,7 @@ class _NationListState extends State<NationList> {
               ),
               const SizedBox(height: 24),
               Text(
-                'Desliza hacia abajo para actualizar',
+                context.localization.pullToRefresh,
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[400],
