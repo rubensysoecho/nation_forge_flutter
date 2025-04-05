@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nation_forge/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/screens/nation/details/nation_detail.dart';
 import '../blocs/nation_bloc.dart';
@@ -14,13 +15,14 @@ class NationList extends StatefulWidget {
 }
 
 class _NationListState extends State<NationList> {
+
   Widget _buildNationCard(Nation nation) {
     return Dismissible(
       key: Key(nation.id),
-      direction: DismissDirection.endToStart,
+      direction: DismissDirection.startToEnd,
       background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20.0),
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 20.0),
         color: Colors.red,
         child: const Icon(
           Icons.delete,
@@ -32,16 +34,17 @@ class _NationListState extends State<NationList> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: AppTheme.primaryColor,
               title: const Text('Confirmar eliminación'),
               content: Text('¿Estás seguro que deseas eliminar la nación "${nation.nationName}"?'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancelar'),
+                  child: const Text('Cancelar', style: TextStyle(color: Colors.white)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Eliminar'),
+                  child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
                 ),
               ],
             );

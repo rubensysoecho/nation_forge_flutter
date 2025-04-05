@@ -51,12 +51,21 @@ class ApiService {
   }
   
   Future<bool> deleteNation(String nationId) async {
-    final uri = Uri.parse('$baseUrl$nationId');
-    final response = await http.delete(uri);
+    final uri = Uri.parse('$baseUrl/$nationId');
+    
+    final response = await http.delete(uri, headers: {'Content-Type': 'application/json'}, body: json.encode({'userId': await userId()}));
     
     if (response.statusCode == 200 || response.statusCode == 204) {
       return true;
-    } else {
+    }
+    else if (response.statusCode == 404) {
+      throw Exception('Nation not found');
+    } else if (response.statusCode == 403) {
+      throw Exception('Unauthorized');
+    } else if (response.statusCode == 500) {
+      throw Exception('Server error');
+    } 
+    else {
       throw Exception('Failed to delete nation');
     }
   }
