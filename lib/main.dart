@@ -11,7 +11,6 @@ import 'package:nation_forge/screens/login.dart';
 import 'app_theme.dart';
 import 'blocs/auth_bloc.dart';
 import 'blocs/nation_bloc.dart';
-import 'blocs/war_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +57,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<WarBloc>(create: (context) => WarBloc()),
         BlocProvider<NationBloc>(create: (context) => NationBloc()),
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
       ],

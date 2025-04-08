@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nation_forge/models/nation/population_details.dart';
-import 'dart:math' as math;
 
 class PopulationDetailsScreen extends StatelessWidget {
   final PopulationDetails? populationDetails;

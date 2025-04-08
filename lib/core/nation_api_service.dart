@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:nation_forge/models/war/war.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/nation/nation.dart';
 

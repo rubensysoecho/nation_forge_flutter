@@ -6,14 +6,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nation_forge/app_theme.dart';
 import 'package:nation_forge/blocs/nation_event.dart';
 import 'package:nation_forge/l10n/app_localizations.dart';
-import 'package:nation_forge/screens/wars_list.dart';
 import 'package:nation_forge/utils/ad_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/nation_bloc.dart';
 import 'login.dart';
 import 'nations_list.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import '../utils/extensions.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -29,7 +27,6 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _pages = [
     NationsList(),
-    WarsList(),
   ];
 
   void _onItemTapped(int index) {
@@ -147,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
           ad.dispose();
         },
       ),
-    )..load();  // Aquí es donde se carga el anuncio
+    )..load(); // Aquí es donde se carga el anuncio
   }
 
   Future<void> _initVersion() async {

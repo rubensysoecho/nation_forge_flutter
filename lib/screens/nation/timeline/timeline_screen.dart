@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:nation_forge/widgets/addable_event.dart';
 import 'package:nation_forge/app_theme.dart';
 import 'package:nation_forge/models/nation/event.dart';
 
@@ -24,35 +22,6 @@ class Timeline extends StatelessWidget {
           ),
           //_buildCarousel(),
         ],
-      ),
-    );
-  }
-
-  Widget _buildCarousel() {
-    return Container(
-      height: 60,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 3,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-            child: Draggable(
-              feedback: Container(
-                  width: 100,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.add)),
-              child: AddableEvent(
-                icon: Icons.account_circle_rounded,
-                text: 'Plaga',
-              ),
-            ),
-          );
-        },
       ),
     );
   }
@@ -112,25 +81,6 @@ class Timeline extends StatelessWidget {
             ],
           ),
         ),
-        /*DragTarget<String>(
-          builder: (context, candidateData, rejectedData) {
-            return Container(
-              width: MediaQuery.of(context).size.width * 1,
-              height: 100,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey[300]!,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(child: Text('Añada aqui su evento')),
-            );
-          },
-          onAcceptWithDetails: (details) {
-            context.read<NationBloc>().add(AddEvent('type', ''));
-          },
-        ),*/
       ],
     );
   }

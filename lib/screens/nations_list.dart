@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nation_forge/utils/ad_helper.dart';
+import 'package:nation_forge/viewmodels/nations_list_viewmodel.dart';
 import 'package:nation_forge/widgets/create_nation_dialog.dart';
-import 'package:nation_forge/widgets/nation_list.dart';
+import 'package:nation_forge/widgets/nation_list_widget.dart';
 
 import '../blocs/nation_bloc.dart';
 import '../blocs/nation_event.dart';
@@ -100,6 +101,11 @@ class _NationsListState extends State<NationsList> {
 
   @override
   Widget build(BuildContext context) {
+    // Crear el ViewModel utilizando el BLoC disponible en el contexto
+    final NationsListViewModel viewModel = NationsListViewModel(
+      nationBloc: context.read<NationBloc>()
+    );
+    
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
@@ -128,7 +134,7 @@ class _NationsListState extends State<NationsList> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
               ),
-              NationList(),
+              NationListWidget(viewModel: viewModel),
             ],
           ),
         ),
