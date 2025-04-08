@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nation_forge/blocs/nation_bloc.dart';
 import 'package:nation_forge/blocs/nation_event.dart';
 import '../app_theme.dart';
 
 class CreateNationDialog extends StatefulWidget {
-  const CreateNationDialog({super.key});
+  final InterstitialAd? interstitialAd;
+  const CreateNationDialog({super.key, this.interstitialAd});
 
   @override
   State<CreateNationDialog> createState() => _CreateNationDialogState();
@@ -57,6 +59,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
             TextField(
               controller: _nameController,
               style: const TextStyle(color: Colors.white),
+              cursorColor: AppTheme.primaryColor,
               decoration: InputDecoration(
                 labelText: 'Nombre de la Nación',
                 labelStyle: const TextStyle(color: Colors.white),
@@ -77,6 +80,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
             TextField(
               controller: _governmentTypeController,
               style: const TextStyle(color: Colors.white),
+              cursorColor: AppTheme.primaryColor,
               decoration: InputDecoration(
                 labelText: 'Tipo de Gobierno',
                 labelStyle: const TextStyle(color: Colors.white),
@@ -99,6 +103,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                   child: TextField(
                     controller: _eraController,
                     style: const TextStyle(color: Colors.white),
+                    cursorColor: AppTheme.primaryColor,
                     decoration: InputDecoration(
                       labelText: 'Era',
                       labelStyle: const TextStyle(color: Colors.white),
@@ -146,11 +151,15 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                     toastLength: Toast.LENGTH_SHORT,
                   );
                 } else {
-                   context.read<NationBloc>().add(CreateNation(
-                      _nameController.text,
-                      _governmentTypeController.text,
-                      '${_eraController.text} ${_isAC ? 'a.C' : 'd.C'}'));
-                       Navigator.of(context).pop();
+                  context.read<NationBloc>().add(
+                        CreateNation(
+                          _nameController.text,
+                          _governmentTypeController.text,
+                          '${_eraController.text} ${_isAC ? 'a.C' : 'd.C'}',
+                        ),
+                      );
+                  widget.interstitialAd?.show();
+                  Navigator.of(context).pop();
                 }
               },
               style: ElevatedButton.styleFrom(

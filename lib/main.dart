@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nation_forge/l10n/app_localizations.dart';
 import 'package:nation_forge/screens/login.dart';
 import 'app_theme.dart';
@@ -14,6 +15,7 @@ import 'blocs/war_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp();
   // Obtener el idioma preferido guardado
   final locale = await AppLocalizations.getPreferredLocale();

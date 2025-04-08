@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "396040374256-lojohl5g3d8c3q8m3p72lii0q15mhntq.apps.googleusercontent.com",
+          "client_id": "396040374256-39vucc8dovbpimrgif53d6vei6drj2hh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rubendev.nation_forge",
-            "certificate_hash": "1440ca53df2e45da1fa1f02b3a9b38bcbbaed312"
+            "certificate_hash": "1540869b2b5bd4ca806031eb79740a8648f54447"
+          }
+        },
+        {
+          "client_id": "396040374256-8ksti5vve5310n7ail8hq25gnk3k1lqe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rubendev.nation_forge",
+            "certificate_hash": "1b661cb622b4dc89e5a771ca5bc6876b6610951d"
           }
         },
         {
@@ -47,7 +55,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-4322967578368905~6329113355"
     }
   ],
   "configuration_version": "1"
