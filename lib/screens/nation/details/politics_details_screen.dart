@@ -4,7 +4,7 @@ import 'package:nation_forge/models/nation/politics_details.dart';
 class PoliticsDetailsScreen extends StatelessWidget {
   final PoliticsDetails? politicsDetails;
 
-  const PoliticsDetailsScreen({Key? key, required this.politicsDetails}) : super(key: key);
+  const PoliticsDetailsScreen({super.key, required this.politicsDetails});
 
   @override
   Widget build(BuildContext context) {

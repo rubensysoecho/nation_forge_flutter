@@ -12,7 +12,7 @@ import '../viewmodels/nations_list_viewmodel.dart';
 class NationListWidget extends StatefulWidget {
   final NationsListViewModel viewModel;
   
-  const NationListWidget({Key? key, required this.viewModel}) : super(key: key);
+  const NationListWidget({super.key, required this.viewModel});
   
   @override
   State<NationListWidget> createState() => _NationListWidgetState();

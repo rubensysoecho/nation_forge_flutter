@@ -4,7 +4,7 @@ import 'package:nation_forge/models/nation/population_details.dart';
 class PopulationDetailsScreen extends StatelessWidget {
   final PopulationDetails? populationDetails;
 
-  const PopulationDetailsScreen({Key? key, required this.populationDetails}) : super(key: key);
+  const PopulationDetailsScreen({super.key, required this.populationDetails});
 
   @override
   Widget build(BuildContext context) {

@@ -123,11 +123,11 @@ class AppLocalizationsProvider extends InheritedWidget {
   final Function(Locale) onChangeLocale;
 
   const AppLocalizationsProvider({
-    Key? key,
+    super.key,
     required this.locale,
     required this.onChangeLocale,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   static AppLocalizationsProvider of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppLocalizationsProvider>()!;

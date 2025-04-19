@@ -194,7 +194,7 @@ class _DashboardState extends State<Dashboard> {
       body: Column(
         children: [
           if (_bannerAd != null)
-            Container(
+            SizedBox(
               width: _bannerAd!.size.width.toDouble(),
               height: _bannerAd!.size.height.toDouble(),
               child: AdWidget(ad: _bannerAd!),

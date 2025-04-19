@@ -31,7 +31,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   final Locale locale;
   
-  const MyApp({Key? key, required this.locale}) : super(key: key);
+  const MyApp({super.key, required this.locale});
 
   @override
   State<MyApp> createState() => _MyAppState();

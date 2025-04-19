@@ -11,6 +11,8 @@ import '../models/nation/nation.dart';
 
 class NationList extends StatefulWidget {
   List<Nation> nationsList = [];
+
+  NationList({super.key});
   @override
   State<NationList> createState() => _NationListState();
 }

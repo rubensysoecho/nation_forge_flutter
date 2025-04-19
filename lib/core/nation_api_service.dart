@@ -6,11 +6,11 @@ import '../models/nation/nation.dart';
 class ApiService {
   static const String prodID = 'nation-forge-backend.onrender.com';
   static const String devID = 'nation-forge-backend-dev.onrender.com';
-  static const String baseUrl = 'https://${prodID}/api/nation/';
+  static const String baseUrl = 'https://$prodID/api/nation/';
 
   Future<String> userId() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = await prefs.getString('user_id');
+    final userId = prefs.getString('user_id');
     return userId!;
   }
 

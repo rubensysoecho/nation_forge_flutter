@@ -6,8 +6,7 @@ class Timeline extends StatelessWidget {
   final List<Event> events;
   final String nationName;
 
-  const Timeline({Key? key, required this.events, required this.nationName})
-      : super(key: key);
+  const Timeline({super.key, required this.events, required this.nationName});
 
   @override
   Widget build(BuildContext context) {

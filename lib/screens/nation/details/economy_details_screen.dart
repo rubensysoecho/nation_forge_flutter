@@ -4,7 +4,7 @@ import 'package:nation_forge/models/nation/economy_details.dart';
 class EconomyDetailsScreen extends StatelessWidget {
   final EconomyDetails? economyDetails;
 
-  const EconomyDetailsScreen({Key? key, required this.economyDetails}) : super(key: key);
+  const EconomyDetailsScreen({super.key, required this.economyDetails});
 
   @override
   Widget build(BuildContext context) {

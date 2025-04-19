@@ -9,7 +9,7 @@ import 'package:nation_forge/screens/nation/timeline/timeline_screen.dart';
 class NationDetailPage extends StatefulWidget {
   final Nation nation;
 
-  const NationDetailPage({Key? key, required this.nation}) : super(key: key);
+  const NationDetailPage({super.key, required this.nation});
 
   @override
   State<NationDetailPage> createState() => _NationDetailPageState();

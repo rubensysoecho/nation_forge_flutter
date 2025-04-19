@@ -12,6 +12,8 @@ import '../app_theme.dart';
 import '../blocs/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
