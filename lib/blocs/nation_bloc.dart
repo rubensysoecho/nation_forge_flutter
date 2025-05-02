@@ -22,14 +22,41 @@ class NationBloc extends Bloc<NationEvent, NationState> {
         emit(NationLoading());
         try {
           final newNation = await _repository.createNation(
-              event.nationName, event.governmentType, event.age);
-          return emit(NationCreated(newNation));
+              event.nationName,
+              event.governmentType,
+              event.age,
+            );
+            return emit(NationCreated(newNation));
         } catch (e) {
           return emit(NationError("Creating Error: $e"));
         }
       },
     );
-    
+
+    on<CreateNationAdvanced>(
+      (event, emit) async {
+        emit(NationLoading());
+        try {
+          final newNation = await _repository.createNationAdvanced(
+            event.nationName,
+            event.governmentType,
+            event.age,
+            event.leaderName ?? '',
+            event.politicalStability ?? 0.0,
+            event.economicSystem ?? '',
+            event.currencyName ?? '',
+            event.wealthDistribution ?? 0.0,
+            event.lifeExpectancy ?? '',
+            event.populationGrowth ?? 0.0,
+            event.other ?? '',
+          );
+          return emit(NationCreated(newNation));
+        } catch (e) {
+          return emit(NationError("Creating Advanced Error: $e"));
+        }
+      },
+    );
+
     on<DeleteNation>((event, emit) async {
       emit(NationLoading());
       try {

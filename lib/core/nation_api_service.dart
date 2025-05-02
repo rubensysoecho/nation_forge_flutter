@@ -27,7 +27,11 @@ class ApiService {
     }
   }
 
-  Future<Nation> createNation(String nationName, String governmentType, String age) async {
+  Future<Nation> createNation(
+    String nationName,
+    String governmentType,
+    String age,
+  ) async {
     final Map<String, dynamic> nationData = {
       "nationName": nationName,
       "governmentType": governmentType,
@@ -47,23 +51,65 @@ class ApiService {
       throw Exception('Failed to create nation');
     }
   }
-  
+
+  Future<Nation> createNationAdvanced(
+    String nationName,
+    String governmentType,
+    String age,
+    String leaderName,
+    double politicalStability,
+    String economicSystem,
+    String currencyName,
+    double wealthDistribution,
+    String lifeExpectancy,
+    double populationGrowth,
+    String other,
+  ) async {
+    final Map<String, dynamic> nationData = {
+      "nationName": nationName,
+      "governmentType": governmentType,
+      "age": age,
+      "leaderName": leaderName,
+      "politicalStability": politicalStability,
+      "economicSystem": economicSystem,
+      "currencyName": currencyName,
+      "wealthDistribution": wealthDistribution,
+      "lifeExpectancy": lifeExpectancy,
+      "populationGrowth": populationGrowth,
+      "userId": await userId(),
+      "advanced": true,
+      "other": other,
+    };
+
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(nationData),
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      final nation = json.decode(response.body)['nation'];
+      return Nation.fromJson(nation);
+    } else {
+      throw Exception('Failed to create nation');
+    }
+  }
+
   Future<bool> deleteNation(String nationId) async {
     final uri = Uri.parse('$baseUrl/$nationId');
-    
-    final response = await http.delete(uri, headers: {'Content-Type': 'application/json'}, body: json.encode({'userId': await userId()}));
-    
+
+    final response = await http.delete(uri,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'userId': await userId()}));
+
     if (response.statusCode == 200 || response.statusCode == 204) {
       return true;
-    }
-    else if (response.statusCode == 404) {
+    } else if (response.statusCode == 404) {
       throw Exception('Nation not found');
     } else if (response.statusCode == 403) {
       throw Exception('Unauthorized');
     } else if (response.statusCode == 500) {
       throw Exception('Server error');
-    } 
-    else {
+    } else {
       throw Exception('Failed to delete nation');
     }
   }

@@ -205,13 +205,16 @@ class _DashboardState extends State<Dashboard> {
                 // Utilizamos el índice seleccionado para mostrar la página correspondiente
                 _pages[_selectedIndex],
                 Positioned(
-                  bottom: 10.0,
-                  right: 10.0,
-                  child: Text(
-                    _version,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.grey,
+                  bottom: 0.0,
+                  right: 0.0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0, right: 5.0),
+                    child: Text(
+                      _version,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
