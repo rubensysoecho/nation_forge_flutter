@@ -2,6 +2,10 @@ abstract class NationEvent {}
 
 class LoadNations extends NationEvent {}
 
+class CreateRandomNation extends NationEvent {
+  CreateRandomNation();
+}
+
 class CreateNation extends NationEvent {
   final String nationName;
   final String governmentType;

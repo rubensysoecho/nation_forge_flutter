@@ -17,6 +17,16 @@ class NationBloc extends Bloc<NationEvent, NationState> {
       }
     });
 
+    on<CreateRandomNation>((event, emit) async {
+      emit(NationLoading());
+      try {
+        final newNation = await _repository.createRandomNation();
+        return emit(NationCreated(newNation));
+      } catch (e) {
+        return emit(NationError("Creating Random Error: $e"));
+      }
+    });
+
     on<CreateNation>(
       (event, emit) async {
         emit(NationLoading());

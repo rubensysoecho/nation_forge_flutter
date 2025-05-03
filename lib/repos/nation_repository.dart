@@ -13,6 +13,8 @@ class NationRepository {
   ) =>
       _apiService.createNation(nationName, governmentType, age);
 
+  Future<Nation> createRandomNation() => _apiService.createRandomNation();
+
   Future<Nation> createNationAdvanced(
     String nationName,
     String governmentType,
@@ -32,4 +34,5 @@ class NationRepository {
 
   Future<bool> deleteNation(String nationId) =>
       _apiService.deleteNation(nationId);
+
 }

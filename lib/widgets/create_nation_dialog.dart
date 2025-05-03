@@ -300,6 +300,42 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 8,
+                    shadowColor: Colors.black38,
+                  ),
+                  onPressed: () {
+                    context.read<NationBloc>().add(CreateRandomNation());
+                    if (widget.interstitialAd != null) {
+                      try {
+                        widget.interstitialAd!.show();
+                      } catch (e) {
+                        print('Error al mostrar anuncio intersticial: $e');
+                      }
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.shuffle, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Random',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
