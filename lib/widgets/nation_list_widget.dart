@@ -5,19 +5,20 @@ import 'package:nation_forge/utils/extensions.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/screens/nation/details/nation_detail.dart';
 import '../blocs/nation_bloc.dart';
-import '../blocs/nation_event.dart';
 import '../blocs/nation_state.dart';
 import '../models/nation/nation.dart';
+import '../viewmodels/nations_list_viewmodel.dart';
 
-class NationList extends StatefulWidget {
-  List<Nation> nationsList = [];
-
-  NationList({super.key});
+class NationListWidget extends StatefulWidget {
+  final NationsListViewModel viewModel;
+  
+  const NationListWidget({super.key, required this.viewModel});
+  
   @override
-  State<NationList> createState() => _NationListState();
+  State<NationListWidget> createState() => _NationListWidgetState();
 }
 
-class _NationListState extends State<NationList> {
+class _NationListWidgetState extends State<NationListWidget> {
 
   Widget _buildNationCard(Nation nation) {
     return Dismissible(
@@ -57,7 +58,7 @@ class _NationListState extends State<NationList> {
         );
       },
       onDismissed: (direction) {
-        context.read<NationBloc>().add(DeleteNation(nation.id));
+        widget.viewModel.deleteNation(nation.id);
       },
       child: Card(
         elevation: 3,
@@ -199,12 +200,8 @@ class _NationListState extends State<NationList> {
     return Expanded(
       child: BlocConsumer<NationBloc, NationState>(
         listener: (context, state) {
-          if (state is NationCreated) {
-            widget.nationsList.add(state.newNation);
-          }
-          if (state is NationLoaded) {
-            widget.nationsList = state.nations;
-          }
+          widget.viewModel.updateNationsList(state);
+          setState(() {});
         },
         builder: (context, state) {
           if (state is NationLoading) {
@@ -213,8 +210,8 @@ class _NationListState extends State<NationList> {
               itemBuilder: (context, index) => _buildLoadingNationCard(),
             );
           }
-          return widget.nationsList.isNotEmpty
-              ? _buildNationList(widget.nationsList)
+          return !widget.viewModel.isNationsListEmpty
+              ? _buildNationList(widget.viewModel.nationsList)
               : _buildNoNationsView();
         },
       ),
