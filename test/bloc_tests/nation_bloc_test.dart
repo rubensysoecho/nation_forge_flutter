@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:nation_forge/blocs/nation_bloc.dart';
-import 'package:nation_forge/blocs/nation_event.dart';
-import 'package:nation_forge/blocs/nation_state.dart';
+import 'package:nation_forge/presentation/providers/blocs/nation/nation_bloc.dart';
+import 'package:nation_forge/presentation/providers/blocs/nation/nation_event.dart';
+import 'package:nation_forge/presentation/providers/blocs/nation/nation_state.dart';
 import 'package:nation_forge/repos/nation_repository.dart';
 
 @GenerateMocks([NationRepository])
@@ -73,3 +73,4 @@ void main() {
     );
   });
 }
+

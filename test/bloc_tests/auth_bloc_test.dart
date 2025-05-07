@@ -6,7 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nation_forge/blocs/auth_bloc.dart';
+import 'package:nation_forge/presentation/providers/blocs/auth/auth_bloc.dart';
 
 @GenerateMocks([
   FirebaseAuth, 

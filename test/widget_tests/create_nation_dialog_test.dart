@@ -4,8 +4,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/widgets/create_nation_dialog.dart';
-import 'package:nation_forge/blocs/nation_bloc.dart';
-import 'package:nation_forge/blocs/nation_event.dart';
+import 'package:nation_forge/presentation/providers/blocs/nation/nation_bloc.dart';
+import 'package:nation_forge/presentation/providers/blocs/nation/nation_event.dart';
 import 'package:mockito/annotations.dart';
 
 @GenerateMocks([NationBloc])
