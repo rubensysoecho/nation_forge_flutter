@@ -49,6 +49,8 @@ dependencies:
   firebase_crashlytics: ^4.3.4
   package_info_plus: ^8.3.0
   google_mobile_ads: ^5.3.1
+  loading_indicator: ^3.1.1
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   mockito: ^5.4.5

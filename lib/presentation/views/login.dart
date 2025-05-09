@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      print('FirebaseAuthException: $e');
     } catch (e) {
       Fluttertoast.showToast(
         msg: 'Error inesperado al iniciar sesión con Google: $e',
@@ -76,7 +75,6 @@ class _LoginPageState extends State<LoginPage> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      print('Exception: $e');
     }
   }
 

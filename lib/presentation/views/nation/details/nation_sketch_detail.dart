@@ -1,29 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:nation_forge/core/utils/extensions.dart';
 import 'package:nation_forge/data/models/nation/nation.dart';
+import 'package:nation_forge/data/models/nation/nation_sketch.dart';
+import 'package:nation_forge/presentation/providers/blocs/nation/nation_state.dart';
 import 'package:nation_forge/presentation/views/nation/details/politics_details_screen.dart';
 import 'package:nation_forge/presentation/views/nation/details/economy_details_screen.dart';
 import 'package:nation_forge/presentation/views/nation/details/population_details_screen.dart';
 import 'package:nation_forge/presentation/views/nation/timeline.dart';
 
-class NationDetailPage extends StatefulWidget {
-  final Nation nation;
+import '../../../providers/blocs/nation/nation_bloc.dart';
+import '../../../providers/blocs/nation/nation_event.dart';
 
-  const NationDetailPage({super.key, required this.nation});
+class NationSketchDetailPage extends StatefulWidget {
+  final NationSketch sketch;
+
+  const NationSketchDetailPage({super.key, required this.sketch});
 
   @override
-  State<NationDetailPage> createState() => _NationDetailPageState();
+  State<NationSketchDetailPage> createState() => _NationSketchDetailPageState();
 }
 
-class _NationDetailPageState extends State<NationDetailPage> {
+class _NationSketchDetailPageState extends State<NationSketchDetailPage> {
   int _selectedIndex = 0;
+  Nation? _nation;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NationBloc>().add(LoadNationDetails(widget.sketch.id));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.nation.nationName,
+          widget.sketch.nationName,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
@@ -32,7 +49,42 @@ class _NationDetailPageState extends State<NationDetailPage> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: _buildBody(_selectedIndex),
+      body: BlocConsumer<NationBloc, NationState>(
+        listener: (context, state) {
+          if (state is NationError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+          if (state is NationDetailsLoaded) {
+            setState(() {
+              _nation = state.nation;
+            });
+          }
+        },
+        builder: (context, state) {
+          if (state is NationLoading || _nation == null) {
+            return Center(
+              child: Column(
+                children: [
+                  Container(
+                    width: 200,
+                    child: LoadingIndicator(
+                      indicatorType: Indicator.ballPulseSync,
+                      strokeWidth: 2,
+                    ),
+                  ),
+                  Text(context.localization.generatingNationDetails),
+                ],
+              ),
+            );
+          }
+          return _buildBody(_selectedIndex);
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -77,14 +129,15 @@ class _NationDetailPageState extends State<NationDetailPage> {
       case 0:
         return _buildDetailView();
       case 1:
-        return PoliticsDetailsScreen(politicsDetails: widget.nation.politicsDetails);
+        return PoliticsDetailsScreen(politicsDetails: _nation?.politicsDetails);
       case 2:
-        return EconomyDetailsScreen(economyDetails: widget.nation.economyDetails);
+        return EconomyDetailsScreen(economyDetails: _nation?.economyDetails);
       case 3:
-        return PopulationDetailsScreen(populationDetails: widget.nation.populationDetails);
+        return PopulationDetailsScreen(
+            populationDetails: _nation?.populationDetails);
       case 4:
         return Timeline(
-            events: widget.nation.events, nationName: widget.nation.nationName);
+            events: _nation!.events, nationName: _nation!.nationName);
       default:
         return _buildDetailView();
     }
@@ -102,37 +155,37 @@ class _NationDetailPageState extends State<NationDetailPage> {
             context,
             icon: Icons.history,
             title: 'Contexto Histórico',
-            content: widget.nation.historicalContext,
+            content: _nation!.historicalContext,
           ),
           _buildInfoSection(
             context,
             icon: Icons.public,
             title: 'Contexto Geopolítico',
-            content: widget.nation.geopoliticalContext,
+            content: _nation!.geopoliticalContext,
           ),
           _buildInfoSection(
             context,
             icon: Icons.account_balance,
             title: 'Política',
-            content: widget.nation.politics,
+            content: _nation!.politics,
           ),
           _buildInfoSection(
             context,
             icon: Icons.people,
             title: 'Población',
-            content: widget.nation.population,
+            content: _nation!.population,
           ),
           _buildListSection(
             context,
             icon: Icons.lightbulb,
             title: 'Curiosidades Históricas',
-            items: widget.nation.historicalCuriosities,
+            items: _nation!.historicalCuriosities,
           ),
           _buildListSection(
             context,
             icon: Icons.person,
             title: 'Personajes Importantes',
-            items: widget.nation.importantCharacters,
+            items: _nation!.importantCharacters,
           ),
           _buildCreationDate(context),
           const SizedBox(height: 20),
@@ -164,7 +217,7 @@ class _NationDetailPageState extends State<NationDetailPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            widget.nation.nationName,
+            _nation!.nationName,
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -311,7 +364,7 @@ class _NationDetailPageState extends State<NationDetailPage> {
                 const SizedBox(width: 8),
                 Text(
                   DateFormat('dd MMMM, yyyy - HH:mm')
-                      .format(widget.nation.createdAt),
+                      .format(_nation!.createdAt),
                   style: const TextStyle(
                     fontSize: 16,
                     fontStyle: FontStyle.italic,

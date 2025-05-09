@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/nation/nation.dart';
+import '../../models/nation/nation_sketch.dart';
 
 class ApiService {
   static const String prodID = 'nation-forge-backend.onrender.com';
   static const String devID = 'nation-forge-backend-dev.onrender.com';
-  static const String baseUrl = 'https://$prodID/api/nation/';
+  static const String baseUrl = 'https://$devID/api/nation/';
 
   Future<String> userId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -24,6 +25,33 @@ class ApiService {
       return nations.reversed.toList();
     } else {
       throw Exception('Failed to load nations');
+    }
+  }
+
+  Future<List<NationSketch>> fetchNationSketches() async {
+    final uri = Uri.parse('$baseUrl/simple/${await userId()}');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      List<NationSketch> nations = data.map((e) => NationSketch.fromJson(e)).toList();
+      return nations.reversed.toList();
+    } else {
+      throw Exception('Failed to load nation sketches');
+    }
+  }
+
+  Future<Nation> fetchNation(String nationId) async {
+    final uri = Uri.parse('$baseUrl/details/$nationId');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final nation = json.decode(response.body);
+      return Nation.fromJson(nation);
+    } else if (response.statusCode == 404) {
+      throw Exception('Nation not found');
+    } else {
+      throw Exception('Failed to load nation');
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nation_forge/core/utils/ad_helper.dart';
 import 'package:nation_forge/presentation/providers/viewmodels/nations_list_viewmodel.dart';
+import 'package:nation_forge/presentation/providers/viewmodels/nations_sketch_list_viewmodel.dart';
 import 'package:nation_forge/presentation/widgets/dashboard/create_nation_dialog.dart';
 import 'package:nation_forge/presentation/widgets/nation/nation_list_widget.dart';
 
@@ -22,7 +23,7 @@ class _NationsPageState extends State<NationsPage> {
   InterstitialAd? _interstitialAd;
 
   Future<void> _refresh() async {
-    context.read<NationBloc>().add(LoadNations());
+    context.read<NationBloc>().add(LoadNationSketches());
   }
   
   @override
@@ -91,7 +92,7 @@ class _NationsPageState extends State<NationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final NationsListViewModel viewModel = NationsListViewModel(
+    final NationsSketchListViewmodel viewModelSketch = NationsSketchListViewmodel(
       nationBloc: context.read<NationBloc>()
     );
     
@@ -123,7 +124,7 @@ class _NationsPageState extends State<NationsPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
               ),
-              NationListWidget(viewModel: viewModel),
+              NationListWidget(viewModel: viewModelSketch),
             ],
           ),
         ),

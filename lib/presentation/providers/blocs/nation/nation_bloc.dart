@@ -7,6 +7,26 @@ class NationBloc extends Bloc<NationEvent, NationState> {
   final NationRepository _repository = NationRepository();
 
   NationBloc() : super(NationInitial()) {
+    on<LoadNationSketches>((event, emit) async {
+      emit(NationLoading());
+      try {
+        final nations = await _repository.getNationSketches();
+        return emit(NationSketchesLoaded(nations));
+      } catch (e) {
+        return emit(NationError("Loading Error: $e"));
+      }
+    });
+
+    on<LoadNationDetails>((event, emit) async {
+      emit(NationLoading());
+      try {
+        final nation = await _repository.getNationDetails(event.nationId);
+        return emit(NationDetailsLoaded(nation));
+      } catch (e) {
+        return emit(NationError("Loading Error: $e"));
+      }
+    });
+
     on<LoadNations>((event, emit) async {
       emit(NationLoading());
       try {

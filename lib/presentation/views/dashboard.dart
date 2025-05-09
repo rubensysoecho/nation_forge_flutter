@@ -10,7 +10,7 @@ import 'package:nation_forge/core/utils/ad_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/blocs/nation/nation_bloc.dart';
 import 'login.dart';
-import 'nations_list.dart';
+import 'nations_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class Dashboard extends StatefulWidget {
@@ -25,15 +25,46 @@ class _DashboardState extends State<Dashboard> {
   String _version = 'Cargando...';
   BannerAd? _bannerAd;
 
-  final List<Widget> _pages = [
-    NationsList(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _initVersion();
+    context.read<NationBloc>().add(LoadNationSketches());
+    _loadBannerAd();
   }
+
+  void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    )..load();
+  }
+
+  Future<void> _initVersion() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      setState(() {
+        _version = 'v${packageInfo.version}';
+      });
+    } catch (e) {
+      _version = 'Error';
+    }
+  }
+
+  final List<Widget> _pages = [
+    NationsPage(),
+  ];
 
   Future<void> _logOff() async {
     final localizations = AppLocalizations.of(context);
@@ -121,45 +152,6 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _initVersion();
-    context.read<NationBloc>().add(LoadNations());
-    _loadBannerAd();
-  }
-
-  void _loadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      request: AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          print('Error al cargar el anuncio: ${error.message}');
-          ad.dispose();
-        },
-      ),
-    )..load(); // Aquí es donde se carga el anuncio
-  }
-
-  Future<void> _initVersion() async {
-    try {
-      final packageInfo = await PackageInfo.fromPlatform();
-      setState(() {
-        _version = 'v${packageInfo.version}';
-      });
-    } catch (e) {
-      print('Error al obtener la versión: $e');
-      _version = 'Error';
-    }
-  }
-
-  @override
   void dispose() {
     _bannerAd?.dispose();
     super.dispose();
@@ -202,10 +194,8 @@ class _DashboardState extends State<Dashboard> {
           Expanded(
             child: Stack(
               children: [
-                // Utilizamos el índice seleccionado para mostrar la página correspondiente
                 _pages[_selectedIndex],
                 Positioned(
-                  
                   bottom: 0.0,
                   right: 0.0,
                   child: Padding(

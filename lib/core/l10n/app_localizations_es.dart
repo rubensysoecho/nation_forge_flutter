@@ -24,6 +24,7 @@ const Map<String, String> spanishValues = {
   'nationDetails': 'Detalles de la Nación',
   'history': 'Historia',
   'government': 'Gobierno',
+  'generatingNationDetails': 'Generando detalles de la nación...',
   'economy': 'Economía',
   'culture': 'Cultura',
   

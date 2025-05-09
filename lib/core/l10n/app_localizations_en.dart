@@ -24,6 +24,7 @@ const Map<String, String> englishValues = {
   'nationDetails': 'Nation Details',
   'history': 'History',
   'government': 'Government',
+  'generatingNationDetails': 'Generating nation details...',
   'economy': 'Economy',
   'culture': 'Culture',
   

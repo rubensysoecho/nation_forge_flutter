@@ -76,6 +76,7 @@ class AppLocalizations {
   String get government => _getLocalizedValue('government', 'Gobierno');
   String get economy => _getLocalizedValue('economy', 'Economía');
   String get culture => _getLocalizedValue('culture', 'Cultura');
+  String get generatingNationDetails => _getLocalizedValue('generatingNationDetails', 'Generando detalles de la nación...');
   
   // War details
   String get warDetails => _getLocalizedValue('warDetails', 'Detalles de la Guerra');

@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nation_forge/app/app_theme.dart';
 import 'package:nation_forge/core/utils/extensions.dart';
+import 'package:nation_forge/data/models/nation/nation_sketch.dart';
+import 'package:nation_forge/presentation/providers/viewmodels/nations_sketch_list_viewmodel.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:nation_forge/presentation/views/nation/details/nation_detail.dart';
 import '../../providers/blocs/nation/nation_bloc.dart';
 import '../../providers/blocs/nation/nation_state.dart';
 import '../../../data/models/nation/nation.dart';
-import '../../providers/viewmodels/nations_list_viewmodel.dart';
+import '../../views/nation/details/nation_sketch_detail.dart';
 
 class NationListWidget extends StatefulWidget {
-  final NationsListViewModel viewModel;
+  final NationsSketchListViewmodel viewModel;
   
   const NationListWidget({super.key, required this.viewModel});
   
@@ -20,7 +22,7 @@ class NationListWidget extends StatefulWidget {
 
 class _NationListWidgetState extends State<NationListWidget> {
 
-  Widget _buildNationCard(Nation nation) {
+  Widget _buildNationCard(NationSketch nation) {
     return Dismissible(
       key: Key(nation.id),
       direction: DismissDirection.startToEnd,
@@ -67,14 +69,78 @@ class _NationListWidgetState extends State<NationListWidget> {
           leading: const Icon(Icons.flag),
           title: Text(nation.nationName),
           subtitle: Text(
-              'Creado el ${nation.createdAt.day}/${nation.createdAt.month}/${nation.createdAt.year}'),
+              nation.id),
           trailing: IconButton(
             icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NationDetailPage(nation: nation),
+                  builder: (context) => NationSketchDetailPage(sketch: nation,),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNationSketchCard(NationSketch nation) {
+    return Dismissible(
+      key: Key(nation.id),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 20.0),
+        color: Colors.red,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+      ),
+      confirmDismiss: (direction) async {
+        return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: AppTheme.primaryColor,
+              title: Text(context.localization.confirmDeletion),
+              content: Text(
+                  context.localization.deletionConfirmation.replaceAll('{name}', nation.nationName)
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(context.localization.cancel, style: const TextStyle(color: Colors.white)),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text(context.localization.delete, style: const TextStyle(color: Colors.white)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      onDismissed: (direction) {
+        widget.viewModel.deleteNation(nation.id);
+      },
+      child: Card(
+        elevation: 3,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: ListTile(
+          leading: const Icon(Icons.flag),
+          title: Text(nation.nationName),
+          subtitle: Text(
+              nation.id),
+          trailing: IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NationSketchDetailPage(sketch: nation,),
                 ),
               );
             },
@@ -138,11 +204,19 @@ class _NationListWidgetState extends State<NationListWidget> {
     );
   }
 
-  Widget _buildNationList(List<Nation> nations) {
+  Widget _buildNationList(List<NationSketch> nations) {
     return ListView.builder(
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: nations.length,
       itemBuilder: (context, index) => _buildNationCard(nations[index]),
+    );
+  }
+
+  Widget _buildNationSketchList(List<NationSketch> nations) {
+    return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: nations.length,
+      itemBuilder: (context, index) => _buildNationSketchCard(nations[index]),
     );
   }
 
@@ -201,7 +275,6 @@ class _NationListWidgetState extends State<NationListWidget> {
       child: BlocConsumer<NationBloc, NationState>(
         listener: (context, state) {
           widget.viewModel.updateNationsList(state);
-          setState(() {});
         },
         builder: (context, state) {
           if (state is NationLoading) {
@@ -211,7 +284,7 @@ class _NationListWidgetState extends State<NationListWidget> {
             );
           }
           return !widget.viewModel.isNationsListEmpty
-              ? _buildNationList(widget.viewModel.nationsList)
+              ? _buildNationSketchList(widget.viewModel.nationsList)
               : _buildNoNationsView();
         },
       ),

@@ -2,6 +2,13 @@ abstract class NationEvent {}
 
 class LoadNations extends NationEvent {}
 
+class LoadNationSketches extends NationEvent {}
+
+class LoadNationDetails extends NationEvent {
+  final String nationId;
+  LoadNationDetails(this.nationId);
+}
+
 class CreateRandomNation extends NationEvent {
   CreateRandomNation();
 }

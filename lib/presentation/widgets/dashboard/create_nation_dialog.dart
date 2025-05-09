@@ -97,7 +97,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                           _isAdvanced = value;
                         });
                       },
-                      activeColor: AppTheme.secondaryColor,
+                      activeTrackColor: AppTheme.secondaryColor,
                     ),
                     const SizedBox(width: 10),
                     Text(
@@ -147,7 +147,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                           _isAC = value;
                         });
                       },
-                      activeColor: AppTheme.secondaryColor,
+                      activeTrackColor: AppTheme.secondaryColor,
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -278,7 +278,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                         try {
                           widget.interstitialAd!.show();
                         } catch (e) {
-                          print('Error al mostrar anuncio intersticial: $e');
+                          print('Error showing ad: $e');
                         }
                       }
                       Navigator.of(context).pop();
@@ -319,7 +319,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                       try {
                         widget.interstitialAd!.show();
                       } catch (e) {
-                        print('Error al mostrar anuncio intersticial: $e');
+                        Fluttertoast.showToast(msg: 'Error showing ad: $e');
                       }
                     }
                     Navigator.of(context).pop();
