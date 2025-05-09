@@ -11,14 +11,14 @@ import '../providers/blocs/nation/nation_bloc.dart';
 import '../providers/blocs/nation/nation_event.dart';
 import '../providers/blocs/nation/nation_state.dart';
 
-class NationsList extends StatefulWidget {
-  const NationsList({super.key});
+class NationsPage extends StatefulWidget {
+  const NationsPage({super.key});
 
   @override
-  State<NationsList> createState() => _NationsListState();
+  State<NationsPage> createState() => _NationsPageState();
 }
 
-class _NationsListState extends State<NationsList> {
+class _NationsPageState extends State<NationsPage> {
   InterstitialAd? _interstitialAd;
 
   Future<void> _refresh() async {
@@ -28,8 +28,6 @@ class _NationsListState extends State<NationsList> {
   @override
   void initState() {
     super.initState();
-    
-    // Crear opciones para el anuncio intersticial con márgenes de seguridad
     final adRequest = AdRequest();
     
     InterstitialAd.load(
@@ -43,9 +41,6 @@ class _NationsListState extends State<NationsList> {
           ad.setImmersiveMode(true);
           
           ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdShowedFullScreenContent: (InterstitialAd ad) {
-              print('Interstitial ad showed.');
-            },
             onAdDismissedFullScreenContent: (InterstitialAd ad) {
               ad.dispose();
               _interstitialAd = null;
@@ -54,20 +49,18 @@ class _NationsListState extends State<NationsList> {
               _loadInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-              print('Interstitial ad failed to show: $error');
               ad.dispose();
               _interstitialAd = null;
             },
           );
         },
         onAdFailedToLoad: (LoadAdError error) {
-          print('Interstitial ad failed to load: $error');
+          Fluttertoast.showToast(msg: 'Interstitial ad failed to load: $error');
         },
       )
     );
   }
-  
-  // Método para cargar un nuevo anuncio intersticial
+
   void _loadInterstitialAd() {
     InterstitialAd.load(
       adUnitId: AdHelper.interstitialAdUnitId,
@@ -78,22 +71,19 @@ class _NationsListState extends State<NationsList> {
           ad.setImmersiveMode(true);
           
           ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdShowedFullScreenContent: (InterstitialAd ad) {
-              print('Interstitial ad showed.');
-            },
             onAdDismissedFullScreenContent: (InterstitialAd ad) {
               ad.dispose();
               _interstitialAd = null;
             },
             onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-              print('Interstitial ad failed to show: $error');
+              Fluttertoast.showToast(msg: 'Interstitial ad failed to show: $error');
               ad.dispose();
               _interstitialAd = null;
             },
           );
         },
         onAdFailedToLoad: (LoadAdError error) {
-          print('Interstitial ad failed to load: $error');
+          Fluttertoast.showToast(msg: 'Interstitial ad failed to load: $error');
         },
       ),
     );
@@ -101,7 +91,6 @@ class _NationsListState extends State<NationsList> {
 
   @override
   Widget build(BuildContext context) {
-    // Crear el ViewModel utilizando el BLoC disponible en el contexto
     final NationsListViewModel viewModel = NationsListViewModel(
       nationBloc: context.read<NationBloc>()
     );
