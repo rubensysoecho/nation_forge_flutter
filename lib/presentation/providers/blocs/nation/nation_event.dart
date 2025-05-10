@@ -1,3 +1,5 @@
+import 'package:nation_forge/data/models/nation/nation_sketch.dart';
+
 abstract class NationEvent {}
 
 class LoadNations extends NationEvent {}
@@ -54,6 +56,6 @@ class AddEvent extends NationEvent {
 }
 
 class DeleteNation extends NationEvent {
-  final String nationId;
-  DeleteNation(this.nationId);
+  final NationSketch nation;
+  DeleteNation(this.nation);
 }

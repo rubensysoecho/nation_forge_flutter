@@ -13,9 +13,9 @@ class NationsListViewModel {
     nationBloc.add(LoadNations());
   }
 
-  void deleteNation(String nationId) {
+  /* void deleteNation(String nationId) {
     nationBloc.add(DeleteNation(nationId));
-  }
+  } */
 
   void updateNationsList(NationState state) {
     if (state is NationCreated) {

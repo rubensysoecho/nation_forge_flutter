@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nation_forge/app/app_theme.dart';
 import 'package:nation_forge/core/utils/extensions.dart';
 import 'package:nation_forge/data/models/nation/nation_sketch.dart';
@@ -13,15 +14,14 @@ import '../../views/nation/details/nation_sketch_detail.dart';
 
 class NationListWidget extends StatefulWidget {
   final NationsSketchListViewmodel viewModel;
-  
+
   const NationListWidget({super.key, required this.viewModel});
-  
+
   @override
   State<NationListWidget> createState() => _NationListWidgetState();
 }
 
 class _NationListWidgetState extends State<NationListWidget> {
-
   Widget _buildNationCard(NationSketch nation) {
     return Dismissible(
       key: Key(nation.id),
@@ -42,17 +42,18 @@ class _NationListWidgetState extends State<NationListWidget> {
             return AlertDialog(
               backgroundColor: AppTheme.primaryColor,
               title: Text(context.localization.confirmDeletion),
-              content: Text(
-                context.localization.deletionConfirmation.replaceAll('{name}', nation.nationName)
-              ),
+              content: Text(context.localization.deletionConfirmation
+                  .replaceAll('{name}', nation.nationName)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(context.localization.cancel, style: const TextStyle(color: Colors.white)),
+                  child: Text(context.localization.cancel,
+                      style: const TextStyle(color: Colors.white)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(context.localization.delete, style: const TextStyle(color: Colors.white)),
+                  child: Text(context.localization.delete,
+                      style: const TextStyle(color: Colors.white)),
                 ),
               ],
             );
@@ -60,7 +61,7 @@ class _NationListWidgetState extends State<NationListWidget> {
         );
       },
       onDismissed: (direction) {
-        widget.viewModel.deleteNation(nation.id);
+        widget.viewModel.deleteNation(nation);
       },
       child: Card(
         elevation: 3,
@@ -68,15 +69,16 @@ class _NationListWidgetState extends State<NationListWidget> {
         child: ListTile(
           leading: const Icon(Icons.flag),
           title: Text(nation.nationName),
-          subtitle: Text(
-              nation.id),
+          subtitle: Text(nation.id),
           trailing: IconButton(
             icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NationSketchDetailPage(sketch: nation,),
+                  builder: (context) => NationSketchDetailPage(
+                    sketch: nation,
+                  ),
                 ),
               );
             },
@@ -106,17 +108,18 @@ class _NationListWidgetState extends State<NationListWidget> {
             return AlertDialog(
               backgroundColor: AppTheme.primaryColor,
               title: Text(context.localization.confirmDeletion),
-              content: Text(
-                  context.localization.deletionConfirmation.replaceAll('{name}', nation.nationName)
-              ),
+              content: Text(context.localization.deletionConfirmation
+                  .replaceAll('{name}', nation.nationName)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(context.localization.cancel, style: const TextStyle(color: Colors.white)),
+                  child: Text(context.localization.cancel,
+                      style: const TextStyle(color: Colors.white)),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(context.localization.delete, style: const TextStyle(color: Colors.white)),
+                  child: Text(context.localization.delete,
+                      style: const TextStyle(color: Colors.white)),
                 ),
               ],
             );
@@ -124,7 +127,7 @@ class _NationListWidgetState extends State<NationListWidget> {
         );
       },
       onDismissed: (direction) {
-        widget.viewModel.deleteNation(nation.id);
+        widget.viewModel.deleteNation(nation);
       },
       child: Card(
         elevation: 3,
@@ -132,15 +135,16 @@ class _NationListWidgetState extends State<NationListWidget> {
         child: ListTile(
           leading: const Icon(Icons.flag),
           title: Text(nation.nationName),
-          subtitle: Text(
-              nation.id),
+          subtitle: Text(nation.id),
           trailing: IconButton(
             icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NationSketchDetailPage(sketch: nation,),
+                  builder: (context) => NationSketchDetailPage(
+                    sketch: nation,
+                  ),
                 ),
               );
             },
@@ -220,7 +224,7 @@ class _NationListWidgetState extends State<NationListWidget> {
     );
   }
 
-  Widget _buildNoNationsView() {  
+  Widget _buildNoNationsView() {
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       children: [
@@ -275,6 +279,12 @@ class _NationListWidgetState extends State<NationListWidget> {
       child: BlocConsumer<NationBloc, NationState>(
         listener: (context, state) {
           widget.viewModel.updateNationsList(state);
+          if (state is NationDeleted) {
+            Fluttertoast.showToast(msg: 'Eliminado: ${state.nationName}');
+          } else if (state is NationCreated) {
+            Fluttertoast.showToast(msg: 'Creada: ${state.newNation.nationName}');
+            setState(() {}); // Forzar reconstrucción del widget después de añadir una nueva nación
+          }
         },
         builder: (context, state) {
           if (state is NationLoading) {

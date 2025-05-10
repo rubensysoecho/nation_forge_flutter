@@ -32,3 +32,8 @@ class NationError extends NationState {
   final String message;
   NationError(this.message);
 }
+
+class NationDeleted extends NationState {
+  final String nationName;
+  NationDeleted(this.nationName);
+}

@@ -14,13 +14,20 @@ class NationsSketchListViewmodel {
     nationBloc.add(LoadNationSketches());
   }
 
-  void deleteNation(String nationId) {
-    nationBloc.add(DeleteNation(nationId));
+  void deleteNation(NationSketch nation) {
+    nationsList.removeWhere((n) => n.id == nation.id);
+    nationBloc.add(DeleteNation(nation));
   }
-
+  
   void updateNationsList(NationState state) {
     if (state is NationSketchesLoaded) {
       nationsList = state.nations;
+    } else if (state is NationCreated) {
+      NationSketch sketch = NationSketch(
+        id: state.newNation.id,
+        nationName: state.newNation.nationName,
+      );
+      nationsList.add(sketch);
     }
   }
 
