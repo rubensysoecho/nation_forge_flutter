@@ -314,7 +314,6 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                     shadowColor: Colors.black38,
                   ),
                   onPressed: () {
-                    context.read<NationBloc>().add(CreateRandomNation());
                     if (widget.interstitialAd != null) {
                       try {
                         widget.interstitialAd!.show();
@@ -322,6 +321,7 @@ class _CreateNationDialogState extends State<CreateNationDialog> {
                         Fluttertoast.showToast(msg: 'Error showing ad: $e');
                       }
                     }
+                    context.read<NationBloc>().add(CreateRandomNation());
                     Navigator.of(context).pop();
                   },
                   child: Row(

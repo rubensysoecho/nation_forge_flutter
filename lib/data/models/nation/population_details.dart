@@ -271,8 +271,8 @@ class Language {
 class Religion {
   final String id;
   final String religionName;
-  final String percentageAdherents;
   final String influence;
+  final String percentageAdherents;
 
   Religion({
     required this.id,

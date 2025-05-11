@@ -185,12 +185,6 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Column(
         children: [
-          if (_bannerAd != null)
-            SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            ),
           Expanded(
             child: Stack(
               children: [
@@ -212,6 +206,12 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           ),
+          if (_bannerAd != null)
+            SizedBox(
+              width: _bannerAd!.size.width.toDouble(),
+              height: _bannerAd!.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd!),
+            ),
         ],
       ),
     );
