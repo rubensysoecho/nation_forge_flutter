@@ -70,7 +70,7 @@ class _NationSketchDetailPageState extends State<NationSketchDetailPage> {
             return Center(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 200,
                     child: LoadingIndicator(
                       indicatorType: Indicator.ballPulseSync,

@@ -82,7 +82,7 @@ class Timeline extends StatelessWidget {
               ),
             ),
           );
-        }).toList(),
+        }),
         /* SizedBox(
           height: events.length * 150.0,
           child: Stack(

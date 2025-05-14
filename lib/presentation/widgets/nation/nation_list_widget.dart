@@ -6,10 +6,8 @@ import 'package:nation_forge/core/utils/extensions.dart';
 import 'package:nation_forge/data/models/nation/nation_sketch.dart';
 import 'package:nation_forge/presentation/providers/viewmodels/nations_sketch_list_viewmodel.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:nation_forge/presentation/views/nation/details/nation_detail.dart';
 import '../../providers/blocs/nation/nation_bloc.dart';
 import '../../providers/blocs/nation/nation_state.dart';
-import '../../../data/models/nation/nation.dart';
 import '../../views/nation/details/nation_sketch_detail.dart';
 
 class NationListWidget extends StatefulWidget {

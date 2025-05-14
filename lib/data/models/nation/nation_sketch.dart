@@ -1,9 +1,4 @@
-import 'package:nation_forge/data/models/nation/event.dart';
-import 'package:nation_forge/data/models/nation/politics_details.dart';
-import 'package:nation_forge/data/models/nation/economy_details.dart';
-import 'package:nation_forge/data/models/nation/population_details.dart';
 
-import 'nation.dart';
 
 class NationSketch {
   final String id;

@@ -7,6 +7,7 @@ import 'package:nation_forge/app/app_theme.dart';
 import 'package:nation_forge/presentation/providers/blocs/nation/nation_event.dart';
 import 'package:nation_forge/core/l10n/app_localizations.dart';
 import 'package:nation_forge/core/utils/ad_helper.dart';
+import 'package:nation_forge/presentation/views/hub.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/blocs/nation/nation_bloc.dart';
 import 'login.dart';
@@ -21,7 +22,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 1;
   String _version = 'Cargando...';
   BannerAd? _bannerAd;
 
@@ -64,6 +65,7 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Widget> _pages = [
     NationsPage(),
+    HubPage(),
   ];
 
   Future<void> _logOff() async {

@@ -9,6 +9,10 @@ class ApiService {
   static const String devID = 'nation-forge-backend-dev.onrender.com';
   static const String baseUrl = 'https://$devID/api/nation/';
 
+  // TODO: Almacena tu clave API de OpenAI de forma segura. No la codifiques directamente aquí en producción.
+  static const String _openAiApiKey = 'TU_CLAVE_API_DE_OPENAI_AQUI';
+  static const String _openAiBaseUrl = 'https://api.openai.com/v1';
+
   Future<String> userId() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('user_id');
@@ -160,23 +164,30 @@ class ApiService {
     }
   }
 
-  /*Future<String> loginUser(String email, String password) async {
-    final url = Uri.parse('https://${prodID}/api/user/login');
-    String loginToken = "";
+  Future<String> generateOpenAiImage(String prompt) async {
+    final uri = Uri.parse('$_openAiBaseUrl/images/generations');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $_openAiApiKey',
+    };
+    final body = json.encode({
+      'model': 'gpt-image-1',
+      'prompt': prompt,
+      'n': 1,
+      'size': '1024x1024',
+      'quality': 'medium',
+    });
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
-      );
+    final response = await http.post(uri, headers: headers, body: body);
 
-      if (response.statusCode == 200) {
-        loginToken = jsonDecode(response.body)['user']['token'];
-      }
-    } catch (e) {
-      throw Exception('Error login');
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      // Asumiendo que la API devuelve la URL de la imagen en data[0].url
+      return data['data'][0]['url'];
+    } else {
+      // Considera un manejo de errores más detallado basado en los códigos de estado de OpenAI
+      print('Error en la API de OpenAI: ${response.body}');
+      throw Exception('Failed to generate image from OpenAI');
     }
-    return loginToken;
-  }*/
+  }
 }

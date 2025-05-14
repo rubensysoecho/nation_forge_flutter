@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nation_forge/core/utils/ad_helper.dart';
-import 'package:nation_forge/presentation/providers/viewmodels/nations_list_viewmodel.dart';
 import 'package:nation_forge/presentation/providers/viewmodels/nations_sketch_list_viewmodel.dart';
 import 'package:nation_forge/presentation/widgets/dashboard/create_nation_dialog.dart';
 import 'package:nation_forge/presentation/widgets/nation/nation_list_widget.dart';
