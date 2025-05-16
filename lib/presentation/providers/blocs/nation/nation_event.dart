@@ -11,6 +11,10 @@ class LoadNationDetails extends NationEvent {
   LoadNationDetails(this.nationId);
 }
 
+class LoadMonthlyNation extends NationEvent {
+  LoadMonthlyNation();
+}
+
 class CreateRandomNation extends NationEvent {
   CreateRandomNation();
 }

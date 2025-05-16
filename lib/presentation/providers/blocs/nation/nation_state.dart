@@ -23,6 +23,12 @@ class NationLoaded extends NationState {
   NationLoaded(this.nations);
 }
 
+class MonthlyNationLoaded extends NationState {
+  final NationSketch nation;
+  final String creatorName;
+  MonthlyNationLoaded(this.nation, this.creatorName);
+}
+
 class NationCreated extends NationState {
   final Nation newNation;
   NationCreated(this.newNation);

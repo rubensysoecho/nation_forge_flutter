@@ -6,10 +6,17 @@ import '../models/nation/nation.dart';
 class NationRepository {
   final ApiService _apiService = ApiService();
 
+  Future<NationSketch> getMonthlyNation() => _apiService.fetchMonthlyNation();
+
   Future<List<Nation>> getNations() => _apiService.fetchNations();
-  Future<List<NationSketch>> getNationSketches() => _apiService.fetchNationSketches();
+
+  Future<List<NationSketch>> getNationSketches() =>
+      _apiService.fetchNationSketches();
+      
   Future<Nation> getNationDetails(String nationId) =>
       _apiService.fetchNation(nationId);
+
+  Future<String> getCreatorId(String nationId) => _apiService.getCreatorId(nationId);
 
   Future<Nation> createNation(
     String nationName,
@@ -33,11 +40,19 @@ class NationRepository {
     double populationGrowth,
     String other,
   ) =>
-      _apiService.createNationAdvanced(nationName, governmentType, age, 
-          leaderName, politicalStability, economicSystem, currencyName,
-          wealthDistribution, lifeExpectancy, populationGrowth, other);
+      _apiService.createNationAdvanced(
+          nationName,
+          governmentType,
+          age,
+          leaderName,
+          politicalStability,
+          economicSystem,
+          currencyName,
+          wealthDistribution,
+          lifeExpectancy,
+          populationGrowth,
+          other);
 
   Future<bool> deleteNation(String nationId) =>
       _apiService.deleteNation(nationId);
-
 }

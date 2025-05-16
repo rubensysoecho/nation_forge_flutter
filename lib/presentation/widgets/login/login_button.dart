@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nation_forge/presentation/views/hub.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../views/dashboard.dart';
@@ -26,7 +27,7 @@ class _LoginButtonState extends State<LoginButton> {
     await prefs.setString('user_id', userId);
   }
 
-  Future<void> _signInWithEmailAndPassword() async {
+  /* Future<void> _signInWithEmailAndPassword() async {
     try {
       final UserCredential userCredential =
           await widget.auth.signInWithEmailAndPassword(
@@ -37,7 +38,7 @@ class _LoginButtonState extends State<LoginButton> {
         await saveSession(userCredential.user!.uid);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Dashboard()),
+          MaterialPageRoute(builder: (context) => HubPage(user: fire)),
         );
       } else {
         Fluttertoast.showToast(
@@ -74,7 +75,7 @@ class _LoginButtonState extends State<LoginButton> {
         fontSize: 16.0,
       );
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class _LoginButtonState extends State<LoginButton> {
             fontSize: 16.0,
           );
         } else {
-          _signInWithEmailAndPassword();
+          //_signInWithEmailAndPassword();
         }
       },
 

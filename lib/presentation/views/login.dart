@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nation_forge/core/l10n/app_localizations.dart';
 import 'package:nation_forge/presentation/views/dashboard.dart';
+import 'package:nation_forge/presentation/views/hub.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
@@ -46,7 +47,9 @@ class _LoginPageState extends State<LoginPage> {
     if (userId != null && userId.isNotEmpty) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Dashboard()),
+        MaterialPageRoute(
+            builder: (context) => Dashboard(
+                page: HubPage(user: FirebaseAuth.instance.currentUser))),
       );
     }
   }
@@ -55,7 +58,9 @@ class _LoginPageState extends State<LoginPage> {
     try {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Dashboard()),
+        MaterialPageRoute(
+            builder: (context) => Dashboard(
+                page: HubPage(user: FirebaseAuth.instance.currentUser))),
       );
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
@@ -81,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -121,7 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Dashboard(),
+                            builder: (context) =>
+                                Dashboard(page: HubPage(user: state.user)),
                           ),
                           (route) => false,
                         );

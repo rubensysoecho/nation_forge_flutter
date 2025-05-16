@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nation_forge/data/services/local/get_user_name.dart';
 import '../../../../data/repositories/nation_repository.dart';
 import 'nation_event.dart';
 import 'nation_state.dart';
@@ -7,6 +8,18 @@ class NationBloc extends Bloc<NationEvent, NationState> {
   final NationRepository _repository = NationRepository();
 
   NationBloc() : super(NationInitial()) {
+    on<LoadMonthlyNation>((event, emit) async {
+      emit(NationLoading());
+      try {
+        final nation = await _repository.getMonthlyNation();
+        final creatorId = await _repository.getCreatorId(nation.id);
+        //final creatorName = await getNameFromFirestore(creatorId);
+        return emit(MonthlyNationLoaded(nation, creatorId));
+      } catch (e) {
+        return emit(NationError("Loading Error: $e"));
+      }
+    });
+
     on<LoadNationSketches>((event, emit) async {
       emit(NationLoading());
       try {

@@ -9,14 +9,38 @@ class ApiService {
   static const String devID = 'nation-forge-backend-dev.onrender.com';
   static const String baseUrl = 'https://$devID/api/nation/';
 
-  // TODO: Almacena tu clave API de OpenAI de forma segura. No la codifiques directamente aquí en producción.
-  static const String _openAiApiKey = 'TU_CLAVE_API_DE_OPENAI_AQUI';
-  static const String _openAiBaseUrl = 'https://api.openai.com/v1';
+  Future<String> getCreatorId(String nationId) async {
+    final uri = Uri.parse('$baseUrl/details/$nationId/creator');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final creator = json.decode(response.body);
+      return creator['creatorId'];
+    } else if (response.statusCode == 404) {
+      throw Exception('Nation not found');
+    } else {
+      throw Exception('Failed to load nation');
+    }
+  }
 
   Future<String> userId() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('user_id');
     return userId!;
+  }
+
+  Future<NationSketch> fetchMonthlyNation() async {
+    final uri = Uri.parse('$baseUrl/monthly');
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final nation = json.decode(response.body);
+      return NationSketch.fromJson(nation);
+    } else if (response.statusCode == 404) {
+      throw Exception('Nation not found');
+    } else {
+      throw Exception('Failed to load nation');
+    }
   }
 
   Future<List<Nation>> fetchNations() async {
@@ -164,7 +188,7 @@ class ApiService {
     }
   }
 
-  Future<String> generateOpenAiImage(String prompt) async {
+  /* Future<String> generateOpenAiImage(String prompt) async {
     final uri = Uri.parse('$_openAiBaseUrl/images/generations');
     final headers = {
       'Content-Type': 'application/json',
@@ -189,5 +213,5 @@ class ApiService {
       print('Error en la API de OpenAI: ${response.body}');
       throw Exception('Failed to generate image from OpenAI');
     }
-  }
+  } */
 }

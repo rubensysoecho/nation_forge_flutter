@@ -15,14 +15,14 @@ import 'nations_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final Widget page;
+  const Dashboard({super.key, required this.page});
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  final int _selectedIndex = 1;
   String _version = 'Cargando...';
   BannerAd? _bannerAd;
 
@@ -62,11 +62,6 @@ class _DashboardState extends State<Dashboard> {
       _version = 'Error';
     }
   }
-
-  final List<Widget> _pages = [
-    NationsPage(),
-    HubPage(),
-  ];
 
   Future<void> _logOff() async {
     final localizations = AppLocalizations.of(context);
@@ -190,7 +185,7 @@ class _DashboardState extends State<Dashboard> {
           Expanded(
             child: Stack(
               children: [
-                _pages[_selectedIndex],
+                widget.page,
                 Positioned(
                   bottom: 0.0,
                   right: 0.0,
