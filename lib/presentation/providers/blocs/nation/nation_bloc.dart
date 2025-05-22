@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nation_forge/data/services/local/get_user_name.dart';
 import '../../../../data/repositories/nation_repository.dart';
 import 'nation_event.dart';
 import 'nation_state.dart';

@@ -1,0 +1,1 @@
+/Users/administrador/AndroidStudioProjects/nation_forge/build/app/intermediates/cxx/RelWithDebInfo/4t3t2i3s/obj/armeabi-v7a
